@@ -1,31 +1,44 @@
 import Link from 'next/link'
 
-import styles from './page.module.css'
+import { MdPerson, MdList, MdTableRows, MdNote, MdLogout } from "react-icons/md"
+
+import styles from "./page.module.css"
 
 const Sidebar = () => {
   return (
     <section className={styles.sidebar}>
-      <div className={styles.logo}>Dway</div>
+      <h3 className="title">PT. Dwi Setiabudi</h3>
+      <div className="divider-white" />
       <nav>
         <ul className={styles.menuList}>
           <li className={styles.menuItem}>
-            <Link href='/employee'>
-              <p className={styles.menuLink}>Employee</p>
+            <MdPerson />
+            <Link href="/employee" style={{ textDecoration: "none" }}>
+              <p className={styles.menuLink}>Pegawai</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href='/criteria'>
-              <p className={styles.menuLink}>Criteria</p>
+            <MdList />
+            <Link href="/criteria" style={{ textDecoration: "none" }}>
+              <p className={styles.menuLink}>Kriteria</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href='/matrix'>
-              <p className={styles.menuLink}>Matrix</p>
+            <MdTableRows />
+            <Link href="/matrix" style={{ textDecoration: "none" }}>
+              <p className={styles.menuLink}>Matriks</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href='/report'>
-              <p className={styles.menuLink}>Report</p>
+            <MdNote />
+            <Link href="/report" style={{ textDecoration: "none" }}>
+              <p className={styles.menuLink}>Laporan</p>
+            </Link>
+          </li>
+          <li className={styles.menuItem}>
+            <MdLogout />
+            <Link href="/sign-in" style={{ textDecoration: "none" }}>
+              <p className={styles.menuLink}>Keluar</p>
             </Link>
           </li>
         </ul>

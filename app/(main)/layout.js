@@ -2,7 +2,7 @@ import Sidebar from '@/components/sidebar/Sidebar'
 
 const MainLayout = ({ children }) => {
   return (
-    <main style={{ display: 'flex', height: '100vh', width: '100%' }}>
+    <main style={{ display: "flex", backgroundColor: "var(--accent-color)" }}>
       <div style={{ flex: 2 }}>
         <Sidebar />
       </div>
