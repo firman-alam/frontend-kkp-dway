@@ -4,8 +4,8 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
 
 const ReportPage = () => {
-  const dataA = [{ no: 1, tahun: "2024", nik: "123131233", nama: "Dwi" }]
-  const columnsA = useMemo(
+  const data = [{ no: 1, tahun: "2024", nik: "123131233", nama: "Dwi" }]
+  const columns = useMemo(
     () => [
       { accessorKey: "no", header: "No.", size: 50 },
       { accessorKey: "tahun", header: "Tahun", size: 50 },
@@ -14,13 +14,6 @@ const ReportPage = () => {
     ],
     []
   )
-
-  const tableA = useMaterialReactTable({
-    data: dataA,
-    columns: columnsA,
-    enableTopToolbar: false,
-    enableBottomToolbar: false,
-  })
 
   return (
     <main className="main">
@@ -32,7 +25,12 @@ const ReportPage = () => {
       {/* Table */}
       <div className="table">
         <p className="title-table">Tabel Rank Karyawan</p>
-        <MaterialReactTable table={tableA} />
+        <MaterialReactTable
+          data={data}
+          columns={columns}
+          enableBottomToolbar={false}
+          enableTopToolbar={false}
+        />
       </div>
     </main>
   )

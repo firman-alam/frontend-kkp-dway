@@ -4,8 +4,16 @@ import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 
-export const ModalAddCriteria = ({ open, onClose }) => {
-  const { control, handleSubmit } = useForm()
+export const ModalEditEmployee = ({ open, onClose, data }) => {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      nik: data.nik,
+      nama: data.nama,
+      alamat: data.alamat,
+      no_telepon: data.no_telepon,
+      divisi: data.divisi,
+    },
+  })
 
   const onSubmit = (value) => {
     console.log(value)
@@ -22,7 +30,7 @@ export const ModalAddCriteria = ({ open, onClose }) => {
         }}
       >
         <Box className="modal-title">
-          <p>Tambah Kriteria</p>
+          <p>Tambah Pegawai</p>
           <button className="button" onClick={onClose}>
             <MdClose />
           </button>
@@ -40,45 +48,71 @@ export const ModalAddCriteria = ({ open, onClose }) => {
             }}
           >
             <div className="row">
-              <label htmlFor="kode">Kode</label>
+              <label htmlFor="nik">NIK</label>
               <Controller
-                name="kode"
+                name="nik"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="kode" className="input" />
+                  <input {...field} type="text" id="nik" className="input" />
                 )}
               />
             </div>
 
             <div className="row">
-              <label htmlFor="nama">Nama</label>
+              <label htmlFor="name">Nama</label>
               <Controller
-                name="nama"
+                name="name"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="nama" className="input" />
+                  <input {...field} type="text" id="name" className="input" />
                 )}
               />
             </div>
 
             <div className="row">
-              <label htmlFor="bobot">Bobot</label>
+              <label htmlFor="address">Alamat</label>
               <Controller
-                name="bobot"
+                name="alamat"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="bobot" className="input" />
+                  <input
+                    {...field}
+                    type="text"
+                    id="address"
+                    className="input"
+                  />
                 )}
               />
             </div>
 
             <div className="row">
-              <label htmlFor="tipe">Tipe</label>
+              <label htmlFor="phoneNumber">No. Telepon</label>
               <Controller
-                name="tipe"
+                name="no_telepon"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="tipe" className="input" />
+                  <input
+                    {...field}
+                    type="text"
+                    id="phoneNumber"
+                    className="input"
+                  />
+                )}
+              />
+            </div>
+
+            <div className="row">
+              <label htmlFor="division">Divisi</label>
+              <Controller
+                name="divisi"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    id="division"
+                    className="input"
+                  />
                 )}
               />
             </div>

@@ -4,7 +4,7 @@ import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 
-export const ModalAddCriteria = ({ open, onClose }) => {
+export const ModalEditCriteria = ({ open, onClose }) => {
   const { control, handleSubmit } = useForm()
 
   const onSubmit = (value) => {

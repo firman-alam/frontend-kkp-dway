@@ -3,29 +3,58 @@
 import { ModalAddEmployee } from "@/components/modals/employee/modal-add-employee"
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
-import { FaPlus } from "react-icons/fa"
+import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
 
 const EmployeePage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
 
-  const data = []
+  const data = [
+    {
+      no: 1,
+      nik: 10000000001,
+      nama: "Dwi",
+      alamat: "Kebon Jeruk",
+      no_telepon: "08220000000",
+      divisi: "IT",
+    },
+    {
+      no: 2,
+      nik: 20000000001,
+      nama: "Budi",
+      alamat: "Palmerah",
+      no_telepon: "08220000000",
+      divisi: "IT",
+    },
+  ]
+
   const columns = useMemo(
     () => [
       { accessorKey: "no", header: "No.", size: 100 },
       { accessorKey: "nik", header: "NIK", size: 100 },
       { accessorKey: "nama", header: "Nama", size: 100 },
       { accessorKey: "alamat", header: "Alamat", size: 100 },
-      { accessorKey: "no_telpon", header: "No. Telepon", size: 100 },
+      { accessorKey: "no_telepon", header: "No. Telepon", size: 100 },
       { accessorKey: "divisi", header: "Divisi", size: 100 },
-      { accessorKey: "aksi", header: "Aksi", size: 100 },
+      {
+        accessorKey: "aksi",
+        header: "Aksi",
+        size: 100,
+        Cell: (params) => {
+          return (
+            <div className="action-wrapper">
+              <button className="button green-button">
+                <FaPen size={15} />
+              </button>
+              <button className="button red-button">
+                <FaTrash size={15} />
+              </button>
+            </div>
+          )
+        },
+      },
     ],
     []
   )
-
-  const table = useMaterialReactTable({
-    data,
-    columns,
-  })
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -48,11 +77,17 @@ const EmployeePage = () => {
 
       {/* Table */}
       <div className="table">
-        <MaterialReactTable table={table} />
+        <MaterialReactTable data={data} columns={columns} />
       </div>
 
       {/* Modals */}
-      <ModalAddEmployee open={openModalAdd} onClose={handleModalAdd} />
+      <ModalAddEmployee
+        open={openModalAdd}
+        onClose={handleModalAdd}
+        enableBottomToolbar={false}
+        enableTopToolbar={false}
+        enableColumnFilters={false}
+      />
     </main>
   )
 }

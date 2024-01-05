@@ -21,11 +21,6 @@ const CriteriaPage = () => {
     []
   )
 
-  const table = useMaterialReactTable({
-    data,
-    columns,
-  })
-
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
   }
@@ -45,7 +40,7 @@ const CriteriaPage = () => {
 
       {/* Table */}
       <div className="table">
-        <MaterialReactTable table={table} />
+        <MaterialReactTable data={data} columns={columns} />
       </div>
 
       {/* Modals */}
