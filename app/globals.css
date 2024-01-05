@@ -33,13 +33,15 @@ body {
 .title {
   font-size: 24px;
   font-weight: 500;
-  color: #fff
+  color: #fff;
+  margin-bottom: 1rem;
 }
 
 .title-black {
   font-size: 24px;
   font-weight: 500;
-  color: #000
+  color: #000;
+  margin-bottom: 1rem
 }
 
 .add {
@@ -72,8 +74,27 @@ body {
   color: white;
 }
 
+.accent-button {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.action-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .table {
   margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.title-table {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 1rem;
 }
 
 .modal-overlay {
