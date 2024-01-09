@@ -1,3 +1,5 @@
 import { api } from "./api"
 
-export const PegawaiApi = api.injectEndpoints({})
+export const PegawaiApi = api.injectEndpoints({
+  endpoints: (builder) => ({}),
+})

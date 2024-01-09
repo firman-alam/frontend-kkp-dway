@@ -4,8 +4,15 @@ import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 
-export const ModalEditCriteria = ({ open, onClose }) => {
-  const { control, handleSubmit } = useForm()
+export const ModalEditCriteria = ({ open, onClose, data }) => {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      kode: data.kode,
+      nama: data.nama,
+      tipe: data.tipe,
+      bobot: data.bobot,
+    },
+  })
 
   const onSubmit = (value) => {
     console.log(value)

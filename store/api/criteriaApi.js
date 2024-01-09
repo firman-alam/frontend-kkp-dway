@@ -1,3 +1,5 @@
 import { api } from "./api"
 
-export const CriteriaApi = api.injectEndpoints({})
+export const CriteriaApi = api.injectEndpoints({
+  endpoints: (builder) => ({}),
+})
