@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { Box, Dialog, Paper } from "@mui/material"
-import { Controller, useForm } from "react-hook-form"
-import { MdClose } from "react-icons/md"
+import { Box, Dialog, Paper } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import { MdClose } from 'react-icons/md'
 
 export const ModalAddEmployee = ({ open, onClose }) => {
   const { control, handleSubmit } = useForm()
@@ -12,23 +12,23 @@ export const ModalAddEmployee = ({ open, onClose }) => {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"md"}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
       <Box
         component={Paper}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '1rem',
         }}
       >
-        <Box className="modal-title">
+        <Box className='modal-title'>
           <p>Tambah Pegawai</p>
-          <button className="button" onClick={onClose}>
+          <button className='button' onClick={onClose}>
             <MdClose />
           </button>
         </Box>
 
-        <div className="divider" />
+        <div className='divider' />
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box

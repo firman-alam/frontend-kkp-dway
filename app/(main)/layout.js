@@ -2,11 +2,17 @@ import Sidebar from '@/components/sidebar/Sidebar'
 
 const MainLayout = ({ children }) => {
   return (
-    <main style={{ display: "flex", backgroundColor: "var(--accent-color)" }}>
-      <div style={{ flex: 2 }}>
+    <main
+      style={{
+        display: 'flex',
+        backgroundColor: 'var(--accent-color)',
+        height: '100vh',
+      }}
+    >
+      <div style={{ flex: 3 }}>
         <Sidebar />
       </div>
-      <div style={{ flex: 10 }}>{children}</div>
+      <div style={{ flex: 9 }}>{children}</div>
     </main>
   )
 }

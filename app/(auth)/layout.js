@@ -1,14 +1,13 @@
 const AuthLayout = ({ children }) => {
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100%",
-        padding: 0,
-        backgroundColor: "var(--primary-color)",
-      }}
-    >
-      {children}
+    <div className='auth'>
+      <div className='auth-left'>{children}</div>
+      <div className='auth-right'>
+        <p>Selamat datang di</p>
+        <p>sistem penunjang keputusan</p>
+        <p>pemilihan pegawai terbaik</p>
+        <p className='title-company'>di pt. bank jasa jakarta</p>
+      </div>
     </div>
   )
 }
