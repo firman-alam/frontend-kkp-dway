@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Dialog, Paper } from '@mui/material'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from "react-hook-form"
 import { MdClose } from 'react-icons/md'
 
 export const ModalAddEmployee = ({ open, onClose }) => {
