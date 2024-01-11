@@ -3,7 +3,10 @@
 import { ModalAddCriteria } from "@/components/modals/criteria/modal-add-criteria"
 import { ModalEditCriteria } from "@/components/modals/criteria/modal-edit-criteria"
 import ModalDelete from "@/components/modals/delete/modal-delete"
-import { useGetAllCriteriaQuery } from "@/store/api/criteriaApi"
+import {
+  useGetAllCriteriaQuery,
+  useLazyGetCriteriaQuery,
+} from "@/store/api/criteriaApi"
 import { MaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
@@ -12,8 +15,10 @@ const CriteriaPage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [idEdit, setIdEdit] = useState(0)
 
-  //  const { data: criteria } = useGetAllCriteriaQuery()
+  const { data: criterias } = useGetAllCriteriaQuery()
+  const { data: criteria } = useLazyGetCriteriaQuery()
 
   const data = []
   const columns = useMemo(
@@ -81,7 +86,7 @@ const CriteriaPage = () => {
       {/* Table */}
       <div className="table">
         <MaterialReactTable
-          data={data}
+          data={criterias || []}
           columns={columns}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -91,8 +96,19 @@ const CriteriaPage = () => {
 
       {/* Modals */}
       <ModalAddCriteria open={openModalAdd} onClose={handleModalAdd} />
-      <ModalEditCriteria open={openModalEdit} onClose={handleModalEdit} />
-      <ModalDelete open={openModalDelete} onClose={handleModalDelete} />
+      {criteria !== undefined && criteria.id_kriteria === idEdit && (
+        <ModalEditCriteria
+          open={openModalEdit}
+          onClose={handleModalEdit}
+          data={criteria}
+        />
+      )}
+      <ModalDelete
+        open={openModalDelete}
+        onClose={handleModalDelete}
+        id={idEdit}
+        title="kriteria"
+      />
     </main>
   )
 }

@@ -4,14 +4,14 @@ import Cookies from 'js-cookie'
 const getToken = () => Cookies.get('token')
 
 export const omniApi = createApi({
-  reducerPath: 'omnichannel',
+  reducerPath: "omnichannel",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/',
+    baseUrl: "http://localhost:9000/",
     prepareHeaders: (headers) => {
       // Include the token in the request headers
       const token = getToken()
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`)
       }
 
       return headers
@@ -19,5 +19,5 @@ export const omniApi = createApi({
   }),
   endpoints: () => ({}),
   overrideExisting: true,
-  tagTypes: ["Pegawai", "Kriteria"],
+  tagTypes: ["Pegawai", "Kriteria", "Nilai"],
 })

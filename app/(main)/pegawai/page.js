@@ -3,17 +3,22 @@
 import ModalDelete from "@/components/modals/delete/modal-delete"
 import { ModalAddEmployee } from '@/components/modals/employee/modal-add-employee'
 import { ModalEditEmployee } from "@/components/modals/employee/modal-edit-employee"
-import { useGetAllPegawaiQuery } from '@/store/api/pegawaiApi'
-import { MaterialReactTable } from 'material-react-table'
-import { useMemo, useState } from 'react'
-import { FaPlus } from 'react-icons/fa'
+import {
+  useGetAllPegawaiQuery,
+  useLazyGetPegawaiByIdQuery,
+} from "@/store/api/pegawaiApi"
+import { MaterialReactTable } from "material-react-table"
+import { useMemo, useState } from "react"
+import { FaPlus } from "react-icons/fa"
 
 const EmployeePage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [idEdit, setIdEdit] = useState(0)
 
   const { data: employees } = useGetAllPegawaiQuery()
+  const { data: employee } = useLazyGetPegawaiByIdQuery()
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -44,7 +49,7 @@ const EmployeePage = () => {
               <button
                 className="button green-button"
                 onClick={() => {
-                  console.log(params.row.original)
+                  setIdEdit(params.row.original.id_pegawai)
                   handleModalEdit()
                 }}
               >
@@ -53,7 +58,7 @@ const EmployeePage = () => {
               <button
                 className="button red-button"
                 onClick={() => {
-                  console.log(params.row.original)
+                  setIdEdit(params.row.original.id_pegawai)
                   handleModalDelete()
                 }}
               >
@@ -95,8 +100,19 @@ const EmployeePage = () => {
 
       {/* Modals */}
       <ModalAddEmployee open={openModalAdd} onClose={handleModalAdd} />
-      <ModalEditEmployee open={openModalEdit} onClose={handleModalEdit} />
-      <ModalDelete open={openModalDelete} onClose={handleModalDelete} />
+      {employee !== undefined && employee.id_pegawai === idEdit && (
+        <ModalEditEmployee
+          open={openModalEdit}
+          onClose={handleModalEdit}
+          data={employee}
+        />
+      )}
+      <ModalDelete
+        open={openModalDelete}
+        onClose={handleModalDelete}
+        id={idEdit}
+        title="pegawai"
+      />
     </main>
   )
 }
