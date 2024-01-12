@@ -18,8 +18,8 @@ const CriteriaPage = () => {
   const [openModalDelete, setOpenModalDelete] = useState(false)
   const [idEdit, setIdEdit] = useState(0)
 
-  const { getUser } = useContext(AuthContext)
-  const user = getUser()
+  // const { getUser } = useContext(AuthContext)
+  // const user = getUser()
 
   const { data: criterias } = useGetAllCriteriaQuery()
   const { data: criteria } = useLazyGetCriteriaQuery()
@@ -38,7 +38,13 @@ const CriteriaPage = () => {
 
   const columns = useMemo(
     () => [
-      { accessorKey: 'no', header: 'No.' },
+      {
+        accessorKey: 'no',
+        header: 'No.',
+        Cell: (params) => {
+          return params.row.index + 1
+        },
+      },
       { accessorKey: 'kode', header: 'Kode' },
       { accessorKey: 'nama', header: 'Nama' },
       { accessorKey: 'bobot', header: 'Bobot' },

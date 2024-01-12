@@ -9,7 +9,7 @@ import {
 } from '@/store/api/pegawaiApi'
 import { MaterialReactTable } from 'material-react-table'
 import { useMemo, useState } from 'react'
-import { FaPlus } from 'react-icons/fa'
+import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 
 const EmployeePage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
@@ -34,7 +34,14 @@ const EmployeePage = () => {
 
   const columns = useMemo(
     () => [
-      { accessorKey: 'no', header: 'No.', size: 100 },
+      {
+        accessorKey: 'no',
+        header: 'No.',
+        size: 100,
+        Cell: (params) => {
+          return params.row.index + 1
+        },
+      },
       { accessorKey: 'nik', header: 'NIK', size: 100 },
       { accessorKey: 'nama', header: 'Nama', size: 100 },
       { accessorKey: 'alamat', header: 'Alamat', size: 100 },

@@ -1,24 +1,24 @@
 'use client'
 
-import ModalDelete from "@/components/modals/delete/modal-delete"
-import { ModalAddNilai } from "@/components/modals/matrix/modal-add-nilai"
-import { ModalEditNilai } from "@/components/modals/matrix/modal-edit-nilai"
-import { useGetAllCriteriaQuery } from "@/store/api/criteriaApi"
+import ModalDelete from '@/components/modals/delete/modal-delete'
+import { ModalAddNilai } from '@/components/modals/matrix/modal-add-nilai'
+import { ModalEditNilai } from '@/components/modals/matrix/modal-edit-nilai'
+import { useGetAllCriteriaQuery } from '@/store/api/criteriaApi'
 import {
   useGetAllNilaiQuery,
   useGetMatriksQuery,
   useLazyGetNilaiQuery,
-} from "@/store/api/matrixApi"
-import { MaterialReactTable } from "material-react-table"
-import { useMemo, useState } from "react"
-import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
+} from '@/store/api/matrixApi'
+import { MaterialReactTable } from 'material-react-table'
+import { useMemo, useState } from 'react'
+import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 
 const criteria = [
-  { id_kriteria: 1, code: "C1" },
-  { id_kriteria: 2, code: "C2" },
-  { id_kriteria: 3, code: "C3" },
-  { id_kriteria: 4, code: "C4" },
-  { id_kriteria: 5, code: "C5" },
+  { id_kriteria: 1, code: 'C1' },
+  { id_kriteria: 2, code: 'C2' },
+  { id_kriteria: 3, code: 'C3' },
+  { id_kriteria: 4, code: 'C4' },
+  { id_kriteria: 5, code: 'C5' },
 ]
 
 const data = [
@@ -27,13 +27,13 @@ const data = [
     no: 1,
     tahun: 2024,
     nik: 3123131231231,
-    nama: "Dwi",
+    nama: 'Dwi',
     details: [
-      { id_kriteria: 1, kode: "C1", nilai: 10 },
-      { id_kriteria: 2, kode: "C2", nilai: 10 },
-      { id_kriteria: 3, kode: "C3", nilai: 10 },
-      { id_kriteria: 4, kode: "C4", nilai: 10 },
-      { id_kriteria: 5, kode: "C5", nilai: 10 },
+      { id_kriteria: 1, kode: 'C1', nilai: 10 },
+      { id_kriteria: 2, kode: 'C2', nilai: 10 },
+      { id_kriteria: 3, kode: 'C3', nilai: 10 },
+      { id_kriteria: 4, kode: 'C4', nilai: 10 },
+      { id_kriteria: 5, kode: 'C5', nilai: 10 },
     ],
   },
   {
@@ -41,13 +41,13 @@ const data = [
     no: 2,
     tahun: 2024,
     nik: 3123132135464,
-    nama: "Seti",
+    nama: 'Seti',
     details: [
-      { id_kriteria: 1, kode: "C1", nilai: 10 },
-      { id_kriteria: 2, kode: "C2", nilai: 10 },
-      { id_kriteria: 3, kode: "C3", nilai: 10 },
-      { id_kriteria: 4, kode: "C4", nilai: 10 },
-      { id_kriteria: 5, kode: "C5", nilai: 10 },
+      { id_kriteria: 1, kode: 'C1', nilai: 10 },
+      { id_kriteria: 2, kode: 'C2', nilai: 10 },
+      { id_kriteria: 3, kode: 'C3', nilai: 10 },
+      { id_kriteria: 4, kode: 'C4', nilai: 10 },
+      { id_kriteria: 5, kode: 'C5', nilai: 10 },
     ],
   },
   {
@@ -55,13 +55,13 @@ const data = [
     no: 3,
     tahun: 2024,
     nik: 312313124765,
-    nama: "Budi",
+    nama: 'Budi',
     details: [
-      { id_kriteria: 1, kode: "C1", nilai: 10 },
-      { id_kriteria: 2, kode: "C2", nilai: 10 },
-      { id_kriteria: 3, kode: "C3", nilai: 10 },
-      { id_kriteria: 4, kode: "C4", nilai: 10 },
-      { id_kriteria: 5, kode: "C5", nilai: 10 },
+      { id_kriteria: 1, kode: 'C1', nilai: 10 },
+      { id_kriteria: 2, kode: 'C2', nilai: 10 },
+      { id_kriteria: 3, kode: 'C3', nilai: 10 },
+      { id_kriteria: 4, kode: 'C4', nilai: 10 },
+      { id_kriteria: 5, kode: 'C5', nilai: 10 },
     ],
   },
 ]
@@ -91,10 +91,17 @@ const MatrixPage = () => {
 
   const columnsA = useMemo(
     () => [
-      { accessorKey: "no", header: "No.", size: 50 },
-      { accessorKey: "tahun", header: "Tahun", size: 50 },
-      { accessorKey: "nik", header: "NIK", size: 70 },
-      { accessorKey: "nama", header: "Nama", size: 70 },
+      {
+        accessorKey: 'no',
+        header: 'No.',
+        size: 50,
+        Cell: (params) => {
+          return params.row.index + 1
+        },
+      },
+      { accessorKey: 'tahun', header: 'Tahun', size: 50 },
+      { accessorKey: 'nik', header: 'NIK', size: 70 },
+      { accessorKey: 'nama', header: 'Nama', size: 70 },
     ],
     []
   )
@@ -119,14 +126,14 @@ const MatrixPage = () => {
   const columnsAction = useMemo(
     () => [
       {
-        accessorKey: "aksi",
-        header: "Aksi",
+        accessorKey: 'aksi',
+        header: 'Aksi',
         size: 100,
         Cell: (params) => {
           return (
-            <div className="action-wrapper">
+            <div className='action-wrapper'>
               <button
-                className="button green-button"
+                className='button green-button'
                 onClick={() => {
                   setIdEdit(params.row.original.id_nilai)
                   handleModalEdit()
@@ -135,7 +142,7 @@ const MatrixPage = () => {
                 Edit <FaPen />
               </button>
               <button
-                className="button red-button"
+                className='button red-button'
                 onClick={() => {
                   setIdEdit(params.row.original.id_nilai)
                   handleModalDelete()
@@ -157,7 +164,7 @@ const MatrixPage = () => {
   )
 
   const columnsC = useMemo(
-    () => [{ accessorKey: "kode_alternatif", header: "Kode Alternatif" }],
+    () => [{ accessorKey: 'kode_alternatif', header: 'Kode Alternatif' }],
     []
   )
 
@@ -184,22 +191,22 @@ const MatrixPage = () => {
   )
 
   return (
-    <main className="main">
+    <main className='main'>
       {/* Header */}
-      <h3 className="title-black">Matriks</h3>
+      <h3 className='title-black'>Matriks</h3>
       {/* Divider */}
-      <div className="divider" />
+      <div className='divider' />
 
-      <div className="add">
-        <button type="button" className="button" onClick={handleModalAdd}>
+      <div className='add'>
+        <button type='button' className='button' onClick={handleModalAdd}>
           Tambah
           <FaPlus />
         </button>
       </div>
 
       {/* Table */}
-      <div className="table">
-        <p className="title-table">Tabel Nilai Pegawai</p>
+      <div className='table'>
+        <p className='title-table'>Tabel Nilai Pegawai</p>
         <MaterialReactTable
           data={data || []}
           columns={allColumnsA}
@@ -208,8 +215,8 @@ const MatrixPage = () => {
         />
       </div>
 
-      <div className="table">
-        <p className="title-table">Tabel Matriks Nilai Pegawai</p>
+      <div className='table'>
+        <p className='title-table'>Tabel Matriks Nilai Pegawai</p>
         <MaterialReactTable
           data={matriks || []}
           columns={allColumnsB}
@@ -231,7 +238,7 @@ const MatrixPage = () => {
         open={openModalDelete}
         onClose={handleModalDelete}
         id={idEdit}
-        title="nilai"
+        title='nilai'
       />
     </main>
   )
