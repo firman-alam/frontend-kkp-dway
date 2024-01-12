@@ -1,14 +1,19 @@
 "use client"
 
 import { ModalAddEmployee } from "@/components/modals/employee/modal-add-employee"
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
+import { MaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
 import { FaPlus } from "react-icons/fa"
 
 const EmployeePage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
 
-  const data = []
+  const data = [
+    { no: 1, nik: 1231231231, nama: 'Dwi', alamat: 'Kebon Jeruk', no_telpon: 123123123, divisi: 'IT'},
+    { no: 2, nik: 1231231231, nama: 'Budi', alamat: 'Kebon Jeruk', no_telpon: 123123123, divisi: 'IT'},
+    { no: 3, nik: 1231231231, nama: 'Setia', alamat: 'Kebon Jeruk', no_telpon: 123123123, divisi: 'Finance'},
+  ]
+
   const columns = useMemo(
     () => [
       { accessorKey: "no", header: "No.", size: 100 },
@@ -21,11 +26,6 @@ const EmployeePage = () => {
     ],
     []
   )
-
-  const table = useMaterialReactTable({
-    data,
-    columns,
-  })
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -48,7 +48,7 @@ const EmployeePage = () => {
 
       {/* Table */}
       <div className="table">
-        <MaterialReactTable table={table} />
+        <MaterialReactTable data={data} columns={columns} />
       </div>
 
       {/* Modals */}

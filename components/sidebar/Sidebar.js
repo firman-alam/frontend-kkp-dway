@@ -9,6 +9,7 @@ const Sidebar = () => {
     <section className={styles.sidebar}>
       <h3 className="title">PT. Dwi Setiabudi</h3>
       <div className="divider-white" />
+      
       <nav>
         <ul className={styles.menuList}>
           <li className={styles.menuItem}>
