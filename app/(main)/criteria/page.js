@@ -1,57 +1,24 @@
-"use client"
+'use client'
 
-import { ModalAddCriteria } from "@/components/modals/criteria/modal-add-criteria"
-import { ModalEditCriteria } from "@/components/modals/criteria/modal-edit-criteria"
-import ModalDelete from "@/components/modals/delete/modal-delete"
-import { useGetAllCriteriaQuery } from "@/store/api/criteriaApi"
-import { MaterialReactTable } from "material-react-table"
-import { useMemo, useState } from "react"
-import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
+import { ModalAddCriteria } from '@/components/modals/criteria/modal-add-criteria'
+import { ModalEditCriteria } from '@/components/modals/criteria/modal-edit-criteria'
+import ModalDelete from '@/components/modals/delete/modal-delete'
+import {
+  useGetAllCriteriaQuery,
+  useLazyGetCriteriaQuery,
+} from '@/store/api/criteriaApi'
+import { MaterialReactTable } from 'material-react-table'
+import { useMemo, useState } from 'react'
+import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 
 const CriteriaPage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [idEdit, setIdEdit] = useState(0)
 
-  //  const { data: criteria } = useGetAllCriteriaQuery()
-
-  const data = []
-  const columns = useMemo(
-    () => [
-      { accessorKey: "no", header: "No." },
-      { accessorKey: "kode", header: "Kode" },
-      { accessorKey: "nama", header: "Nama" },
-      { accessorKey: "bobot", header: "Bobot" },
-      { accessorKey: "tipe", header: "Tipe" },
-      {
-        accessorKey: "aksi",
-        header: "Aksi",
-        Cell: (params) => {
-          return (
-            <div className="action-wrapper">
-              <button
-                className="button green-button"
-                onClick={() => {
-                  console.log(params.row.original)
-                }}
-              >
-                Edit <FaPen />
-              </button>
-              <button
-                className="button red-button"
-                onClick={() => {
-                  console.log(params.row.original)
-                }}
-              >
-                Hapus <FaTrash />
-              </button>
-            </div>
-          )
-        },
-      },
-    ],
-    []
-  )
+  const { data: criterias } = useGetAllCriteriaQuery()
+  const [getData, { data: criteria }] = useLazyGetCriteriaQuery()
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -65,23 +32,70 @@ const CriteriaPage = () => {
     setOpenModalDelete((prev) => !prev)
   }
 
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: 'no',
+        header: 'No.',
+        size: 100,
+        Cell: (params) => {
+          return params.row.index + 1
+        },
+      },
+      { accessorKey: 'code', header: 'Kode', size: 100 },
+      { accessorKey: 'nama', header: 'Nama', size: 100 },
+      { accessorKey: 'bobot', header: 'Bobot', size: 100 },
+      { accessorKey: 'tipe', header: 'Tipe', size: 100 },
+      {
+        accessorKey: 'aksi',
+        header: 'Aksi',
+        Cell: (params) => {
+          return (
+            <div className='action-wrapper'>
+              <button
+                className='button green-button'
+                onClick={() => {
+                  handleModalEdit()
+                  getData({ id: params.row.original.id_kriteria })
+                  setIdEdit(params.row.original.id_kriteria)
+                }}
+              >
+                Edit <FaPen />
+              </button>
+              <button
+                className='button red-button'
+                onClick={() => {
+                  handleModalDelete()
+                  setIdEdit(params.row.original.id_kriteria)
+                }}
+              >
+                Hapus <FaTrash />
+              </button>
+            </div>
+          )
+        },
+      },
+    ],
+    []
+  )
+
   return (
-    <main className="main">
-      <h3 className="title-black">Kriteria</h3>
+    <main className='main'>
+      <h3 className='title-black'>Kriteria</h3>
 
-      <div className="divider" />
+      <div className='divider' />
 
-      <div className="add">
-        <button type="button" className="button" onClick={handleModalAdd}>
+      <div className='add'>
+        <button type='button' className='button' onClick={handleModalAdd}>
           Tambah
           <FaPlus />
         </button>
       </div>
 
       {/* Table */}
-      <div className="table">
+      <div className='table'>
         <MaterialReactTable
-          data={data}
+          data={criterias || []}
           columns={columns}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -91,8 +105,19 @@ const CriteriaPage = () => {
 
       {/* Modals */}
       <ModalAddCriteria open={openModalAdd} onClose={handleModalAdd} />
-      <ModalEditCriteria open={openModalEdit} onClose={handleModalEdit} />
-      <ModalDelete open={openModalDelete} onClose={handleModalDelete} />
+      {criteria !== undefined && criteria.id_kriteria === idEdit && (
+        <ModalEditCriteria
+          open={openModalEdit}
+          onClose={handleModalEdit}
+          data={criteria}
+        />
+      )}
+      <ModalDelete
+        open={openModalDelete}
+        onClose={handleModalDelete}
+        id={idEdit}
+        title='kriteria'
+      />
     </main>
   )
 }
