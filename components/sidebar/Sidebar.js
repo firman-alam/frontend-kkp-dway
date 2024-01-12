@@ -1,42 +1,55 @@
-import Link from 'next/link'
+"use client"
+
+import { useSignOutMutation } from "@/store/api/authApi"
+import { AuthContext } from "@/utils/authContext"
+import Link from "next/link"
+import { useContext } from "react"
 
 import { MdPerson, MdList, MdTableRows, MdNote, MdLogout } from "react-icons/md"
 
 import styles from "./page.module.css"
 
 const Sidebar = () => {
+  // const { signout } = useContext(AuthContext)
+  const [signOut] = useSignOutMutation()
+
+  const handleSignOut = () => {
+    // signout()
+    signOut()
+  }
+
   return (
     <section className={styles.sidebar}>
-      <h3 className="title">PT. Dwi Setiabudi</h3>
+      <h3 className="title">PT. Bank Jasa Jakarta</h3>
       <div className="divider-white" />
       
       <nav>
         <ul className={styles.menuList}>
           <li className={styles.menuItem}>
             <MdPerson />
-            <Link href="/employee" style={{ textDecoration: "none" }}>
+            <Link href="/pegawai" style={{ textDecoration: "none" }}>
               <p className={styles.menuLink}>Pegawai</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
             <MdList />
-            <Link href="/criteria" style={{ textDecoration: "none" }}>
+            <Link href="/kriteria" style={{ textDecoration: "none" }}>
               <p className={styles.menuLink}>Kriteria</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
             <MdTableRows />
-            <Link href="/matrix" style={{ textDecoration: "none" }}>
+            <Link href="/matriks" style={{ textDecoration: "none" }}>
               <p className={styles.menuLink}>Matriks</p>
             </Link>
           </li>
           <li className={styles.menuItem}>
             <MdNote />
-            <Link href="/report" style={{ textDecoration: "none" }}>
+            <Link href="/laporan" style={{ textDecoration: "none" }}>
               <p className={styles.menuLink}>Laporan</p>
             </Link>
           </li>
-          <li className={styles.menuItem}>
+          <li className={styles.menuItem} onClick={handleSignOut}>
             <MdLogout />
             <Link href="/sign-in" style={{ textDecoration: "none" }}>
               <p className={styles.menuLink}>Keluar</p>
