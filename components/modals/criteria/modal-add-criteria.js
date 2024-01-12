@@ -3,6 +3,7 @@
 import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
+import { NumericFormat } from "react-number-format"
 
 export const ModalAddCriteria = ({ open, onClose }) => {
   const { control, handleSubmit } = useForm()
@@ -67,7 +68,17 @@ export const ModalAddCriteria = ({ open, onClose }) => {
                 name="bobot"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="bobot" className="input" />
+                  <NumericFormat
+                    name="bobot"
+                    className="input"
+                    inputProps={{ maxLength: 15 }}
+                    value={field.value}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      const parsedValue = parseInt(value.value)
+                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
+                    }}
+                  />
                 )}
               />
             </div>
@@ -78,7 +89,10 @@ export const ModalAddCriteria = ({ open, onClose }) => {
                 name="tipe"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="tipe" className="input" />
+                  <select {...field} id="tipe" className="input">
+                    <option value="benefit">Benefit</option>
+                    <option value="cost">Cost</option>
+                  </select>
                 )}
               />
             </div>

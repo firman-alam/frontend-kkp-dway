@@ -6,74 +6,82 @@ import { Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
 
+const criteria = [
+  { id_kriteria: 1, code: "C1", nama: "Loyalitas" },
+  { id_kriteria: 2, code: "C2", nama: "Kedisiplinan" },
+  { id_kriteria: 3, code: "C3", nama: "Kepemimpan" },
+  { id_kriteria: 4, code: "C4", nama: "Kinerja" },
+  { id_kriteria: 5, code: "C5", nama: "Umur" },
+]
+
 export const ModalAddNilai = ({ open, onClose }) => {
   const { control, handleSubmit } = useForm()
 
   const { data: employee } = useGetAllPegawaiQuery()
-  const { data: criteria } = useGetAllCriteriaQuery()
+  // const { data: criteria } = useGetAllCriteriaQuery()
 
   const onSubmit = (value) => {
     console.log(value)
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"md"}>
       <Box
         component={Paper}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '1rem',
+          display: "flex",
+          flexDirection: "column",
+          padding: "1rem",
         }}
       >
-        <Box className='modal-title'>
+        <Box className="modal-title">
           <p>Tambah Nilai</p>
-          <button className='button' onClick={onClose}>
+          <button className="button" onClick={onClose}>
             <MdClose />
           </button>
         </Box>
 
-        <div className='divider' />
+        <div className="divider" />
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              marginY: '1rem',
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              marginY: "1rem",
             }}
           >
-            <div className='row'>
-              <label htmlFor='name'>Nama</label>
+            <div className="row">
+              <label htmlFor="name">Nama</label>
               <Controller
-                name='role'
+                name="role"
                 control={control}
-                defaultValue='admin' // Set default value if needed
+                defaultValue="admin" // Set default value if needed
                 render={({ field }) => (
-                  <select {...field} id='role' className='input'>
+                  <select {...field} id="role" className="input">
                     {employee?.map((e) => (
-                      <option value='admin' key={e.id_pegawai}>
-                        {e.nama + ' - ' + e.nik}
+                      <option value="admin" key={e.id_pegawai}>
+                        {e.nama + " - " + e.nik}
                       </option>
                     ))}
                   </select>
                 )}
               />
             </div>
-            <div className='row'>
-              <label htmlFor='tahun'>Tahun</label>
-              <input type='text' id='tahun' className='input' />
+            <div className="row">
+              <label htmlFor="tahun">Tahun</label>
+              <input type="text" id="tahun" className="input" />
             </div>
             {criteria?.map((c) => (
-              <div className='row' key={c.id_kriteria}>
-                <label htmlFor='name'>{c.nama}</label>
+              <div className="row" key={c.id_kriteria}>
+                <label htmlFor="name">{c.nama}</label>
                 <Controller
-                  name='role'
+                  name="role"
                   control={control}
-                  defaultValue='admin' // Set default value if needed
+                  defaultValue="admin" // Set default value if needed
                   render={({ field }) => (
-                    <select {...field} id='role' className='input'>
+                    <select {...field} id="role" className="input">
                       {optionsValue?.map((e) => (
                         <option value={e.value} key={e.value}>
                           {e.value}
@@ -86,15 +94,15 @@ export const ModalAddNilai = ({ open, onClose }) => {
             ))}
           </Box>
 
-          <div className='modal-button'>
+          <div className="modal-button">
             <button
-              type='button'
-              className='button red-button'
+              type="button"
+              className="button red-button"
               onClick={onClose}
             >
               Batal
             </button>
-            <button type='submit' className='button green-button'>
+            <button type="submit" className="button green-button">
               Tambah
             </button>
           </div>

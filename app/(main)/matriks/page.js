@@ -4,7 +4,11 @@ import ModalDelete from "@/components/modals/delete/modal-delete"
 import { ModalAddNilai } from "@/components/modals/matrix/modal-add-nilai"
 import { ModalEditNilai } from "@/components/modals/matrix/modal-edit-nilai"
 import { useGetAllCriteriaQuery } from "@/store/api/criteriaApi"
-import { useGetAllNilaiQuery } from "@/store/api/matrixApi"
+import {
+  useGetAllNilaiQuery,
+  useGetMatriksQuery,
+  useLazyGetNilaiQuery,
+} from "@/store/api/matrixApi"
 import { MaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
@@ -17,7 +21,7 @@ const criteria = [
   { id_kriteria: 5, code: "C5" },
 ]
 
-const nilai = [
+const data = [
   {
     id_nilai: 1,
     no: 1,
@@ -66,9 +70,12 @@ const MatrixPage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [idEdit, setIdEdit] = useState(0)
 
   // const { data: criteria } = useGetAllCriteriaQuery()
-  // const { data: nilai } = useGetAllNilaiQuery()
+  // const { data } = useGetAllNilaiQuery()
+  const { data: nilai } = useLazyGetNilaiQuery()
+  const { data: matriks } = useGetMatriksQuery()
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -121,7 +128,7 @@ const MatrixPage = () => {
               <button
                 className="button green-button"
                 onClick={() => {
-                  console.log(params.row.original)
+                  setIdEdit(params.row.original.id_nilai)
                   handleModalEdit()
                 }}
               >
@@ -130,8 +137,8 @@ const MatrixPage = () => {
               <button
                 className="button red-button"
                 onClick={() => {
+                  setIdEdit(params.row.original.id_nilai)
                   handleModalDelete()
-                  console.log(params.row.original)
                 }}
               >
                 Hapus <FaTrash />
@@ -194,7 +201,7 @@ const MatrixPage = () => {
       <div className="table">
         <p className="title-table">Tabel Nilai Pegawai</p>
         <MaterialReactTable
-          data={nilai || []}
+          data={data || []}
           columns={allColumnsA}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -204,7 +211,7 @@ const MatrixPage = () => {
       <div className="table">
         <p className="title-table">Tabel Matriks Nilai Pegawai</p>
         <MaterialReactTable
-          data={[]}
+          data={matriks || []}
           columns={allColumnsB}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -213,8 +220,19 @@ const MatrixPage = () => {
 
       {/* Modals */}
       <ModalAddNilai open={openModalAdd} onClose={handleModalAdd} />
-      <ModalEditNilai open={openModalEdit} onClose={handleModalEdit} />
-      <ModalDelete open={openModalDelete} onClose={handleModalDelete} />
+      {nilai !== undefined && nilai.id_nilai === idEdit && (
+        <ModalEditNilai
+          open={openModalEdit}
+          onClose={handleModalEdit}
+          data={nilai}
+        />
+      )}
+      <ModalDelete
+        open={openModalDelete}
+        onClose={handleModalDelete}
+        id={idEdit}
+        title="nilai"
+      />
     </main>
   )
 }

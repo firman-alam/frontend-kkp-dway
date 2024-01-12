@@ -1,24 +1,24 @@
 'use client'
 
-import { ModalAddCriteria } from '@/components/modals/criteria/modal-add-criteria'
-import { ModalEditCriteria } from '@/components/modals/criteria/modal-edit-criteria'
 import ModalDelete from '@/components/modals/delete/modal-delete'
+import { ModalAddEmployee } from '@/components/modals/employee/modal-add-employee'
+import { ModalEditEmployee } from '@/components/modals/employee/modal-edit-employee'
 import {
-  useGetAllCriteriaQuery,
-  useLazyGetCriteriaQuery,
-} from '@/store/api/criteriaApi'
+  useGetAllPegawaiQuery,
+  useLazyGetPegawaiByIdQuery,
+} from '@/store/api/pegawaiApi'
 import { MaterialReactTable } from 'material-react-table'
 import { useMemo, useState } from 'react'
-import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 
-const CriteriaPage = () => {
+const EmployeePage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
   const [idEdit, setIdEdit] = useState(0)
 
-  const { data: criterias } = useGetAllCriteriaQuery()
-  const [getData, { data: criteria }] = useLazyGetCriteriaQuery()
+  const { data: employees } = useGetAllPegawaiQuery()
+  const { data: employee } = useLazyGetPegawaiByIdQuery()
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -34,18 +34,12 @@ const CriteriaPage = () => {
 
   const columns = useMemo(
     () => [
-      {
-        accessorKey: 'no',
-        header: 'No.',
-        size: 100,
-        Cell: (params) => {
-          return params.row.index + 1
-        },
-      },
-      { accessorKey: 'code', header: 'Kode', size: 100 },
+      { accessorKey: 'no', header: 'No.', size: 100 },
+      { accessorKey: 'nik', header: 'NIK', size: 100 },
       { accessorKey: 'nama', header: 'Nama', size: 100 },
-      { accessorKey: 'bobot', header: 'Bobot', size: 100 },
-      { accessorKey: 'tipe', header: 'Tipe', size: 100 },
+      { accessorKey: 'alamat', header: 'Alamat', size: 100 },
+      { accessorKey: 'no_telepon', header: 'No. Telepon', size: 100 },
+      { accessorKey: 'divisi', header: 'Divisi', size: 100 },
       {
         accessorKey: 'aksi',
         header: 'Aksi',
@@ -55,9 +49,8 @@ const CriteriaPage = () => {
               <button
                 className='button green-button'
                 onClick={() => {
+                  setIdEdit(params.row.original.id_pegawai)
                   handleModalEdit()
-                  getData({ id: params.row.original.id_kriteria })
-                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Edit <FaPen />
@@ -65,8 +58,8 @@ const CriteriaPage = () => {
               <button
                 className='button red-button'
                 onClick={() => {
+                  setIdEdit(params.row.original.id_pegawai)
                   handleModalDelete()
-                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Hapus <FaTrash />
@@ -81,8 +74,10 @@ const CriteriaPage = () => {
 
   return (
     <main className='main'>
-      <h3 className='title-black'>Kriteria</h3>
+      {/* Header */}
+      <h3 className='title-black'>Pegawai</h3>
 
+      {/* Divider */}
       <div className='divider' />
 
       <div className='add'>
@@ -95,7 +90,7 @@ const CriteriaPage = () => {
       {/* Table */}
       <div className='table'>
         <MaterialReactTable
-          data={criterias || []}
+          data={employees || []}
           columns={columns}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -104,22 +99,22 @@ const CriteriaPage = () => {
       </div>
 
       {/* Modals */}
-      <ModalAddCriteria open={openModalAdd} onClose={handleModalAdd} />
-      {criteria !== undefined && criteria.id_kriteria === idEdit && (
-        <ModalEditCriteria
+      <ModalAddEmployee open={openModalAdd} onClose={handleModalAdd} />
+      {employee !== undefined && employee.id_pegawai === idEdit && (
+        <ModalEditEmployee
           open={openModalEdit}
           onClose={handleModalEdit}
-          data={criteria}
+          data={employee}
         />
       )}
       <ModalDelete
         open={openModalDelete}
         onClose={handleModalDelete}
         id={idEdit}
-        title='kriteria'
+        title='pegawai'
       />
     </main>
   )
 }
 
-export default CriteriaPage
+export default EmployeePage

@@ -3,6 +3,7 @@
 import { Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from 'react-icons/md'
+import { NumericFormat } from "react-number-format"
 
 export const ModalAddEmployee = ({ open, onClose }) => {
   const { control, handleSubmit } = useForm()
@@ -12,23 +13,23 @@ export const ModalAddEmployee = ({ open, onClose }) => {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"md"}>
       <Box
         component={Paper}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '1rem',
+          display: "flex",
+          flexDirection: "column",
+          padding: "1rem",
         }}
       >
-        <Box className='modal-title'>
+        <Box className="modal-title">
           <p>Tambah Pegawai</p>
-          <button className='button' onClick={onClose}>
+          <button className="button" onClick={onClose}>
             <MdClose />
           </button>
         </Box>
 
-        <div className='divider' />
+        <div className="divider" />
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
@@ -45,7 +46,17 @@ export const ModalAddEmployee = ({ open, onClose }) => {
                 name="nik"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="nik" className="input" />
+                  <NumericFormat
+                    name="nik"
+                    className="input"
+                    inputProps={{ maxLength: 15 }}
+                    value={field.value}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      const parsedValue = parseInt(value.value)
+                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
+                    }}
+                  />
                 )}
               />
             </div>

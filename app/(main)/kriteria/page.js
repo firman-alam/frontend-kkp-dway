@@ -1,23 +1,28 @@
 'use client'
 
+import { ModalAddCriteria } from '@/components/modals/criteria/modal-add-criteria'
+import { ModalEditCriteria } from '@/components/modals/criteria/modal-edit-criteria'
 import ModalDelete from '@/components/modals/delete/modal-delete'
-import { ModalAddEmployee } from '@/components/modals/employee/modal-add-employee'
-import { ModalEditEmployee } from '@/components/modals/employee/modal-edit-employee'
 import {
-  useGetAllPegawaiQuery,
-  useLazyGetPegawaiByIdQuery,
-} from '@/store/api/pegawaiApi'
+  useGetAllCriteriaQuery,
+  useLazyGetCriteriaQuery,
+} from '@/store/api/criteriaApi'
+import { AuthContext } from '@/utils/authContext'
 import { MaterialReactTable } from 'material-react-table'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 
-const EmployeePage = () => {
+const CriteriaPage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [idEdit, setIdEdit] = useState(0)
 
-  const { data: employees } = useGetAllPegawaiQuery()
-  const [getData, { data: employee }] = useLazyGetPegawaiByIdQuery()
+  const { getUser } = useContext(AuthContext)
+  const user = getUser()
+
+  const { data: criterias } = useGetAllCriteriaQuery()
+  const { data: criteria } = useLazyGetCriteriaQuery()
 
   const handleModalAdd = () => {
     setOpenModalAdd((prev) => !prev)
@@ -33,19 +38,11 @@ const EmployeePage = () => {
 
   const columns = useMemo(
     () => [
-      {
-        accessorKey: 'no',
-        header: 'No.',
-        size: 100,
-        Cell: (params) => {
-          return params.row.index + 1
-        },
-      },
-      { accessorKey: 'nik', header: 'NIK', size: 100 },
-      { accessorKey: 'nama', header: 'Nama', size: 100 },
-      { accessorKey: 'alamat', header: 'Alamat', size: 100 },
-      { accessorKey: 'no_telepon', header: 'No. Telepon', size: 100 },
-      { accessorKey: 'divisi', header: 'Divisi', size: 100 },
+      { accessorKey: 'no', header: 'No.' },
+      { accessorKey: 'kode', header: 'Kode' },
+      { accessorKey: 'nama', header: 'Nama' },
+      { accessorKey: 'bobot', header: 'Bobot' },
+      { accessorKey: 'tipe', header: 'Tipe' },
       {
         accessorKey: 'aksi',
         header: 'Aksi',
@@ -55,8 +52,8 @@ const EmployeePage = () => {
               <button
                 className='button green-button'
                 onClick={() => {
-                  console.log(params)
                   handleModalEdit()
+                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Edit <FaPen />
@@ -64,8 +61,8 @@ const EmployeePage = () => {
               <button
                 className='button red-button'
                 onClick={() => {
-                  console.log(params.row.original)
                   handleModalDelete()
+                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Hapus <FaTrash />
@@ -80,10 +77,8 @@ const EmployeePage = () => {
 
   return (
     <main className='main'>
-      {/* Header */}
-      <h3 className='title-black'>Pegawai</h3>
+      <h3 className='title-black'>Kriteria</h3>
 
-      {/* Divider */}
       <div className='divider' />
 
       <div className='add'>
@@ -96,7 +91,7 @@ const EmployeePage = () => {
       {/* Table */}
       <div className='table'>
         <MaterialReactTable
-          data={employees || []}
+          data={criterias || []}
           columns={columns}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -105,15 +100,22 @@ const EmployeePage = () => {
       </div>
 
       {/* Modals */}
-      <ModalAddEmployee open={openModalAdd} onClose={handleModalAdd} />
-      <ModalEditEmployee
-        open={openModalEdit}
-        onClose={handleModalEdit}
-        data={employees}
+      <ModalAddCriteria open={openModalAdd} onClose={handleModalAdd} />
+      {criteria !== undefined && criteria.id_kriteria === idEdit && (
+        <ModalEditCriteria
+          open={openModalEdit}
+          onClose={handleModalEdit}
+          data={criteria}
+        />
+      )}
+      <ModalDelete
+        open={openModalDelete}
+        onClose={handleModalDelete}
+        id={idEdit}
+        title='kriteria'
       />
-      <ModalDelete open={openModalDelete} onClose={handleModalDelete} />
     </main>
   )
 }
 
-export default EmployeePage
+export default CriteriaPage

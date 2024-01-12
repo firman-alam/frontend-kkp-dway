@@ -5,56 +5,57 @@ import styles from './page.module.css'
 import { useSignInMutation } from '@/store/api/authApi'
 import { Controller, useForm } from 'react-hook-form'
 import Cookies from 'js-cookie'
+import { AuthContext } from "@/utils/authContext"
+import { useContext } from "react"
 
 const SignInPage = () => {
   const [signIn] = useSignInMutation()
-
   const { control, handleSubmit } = useForm()
+  const { signin } = useContext(AuthContext)
 
   const onSubmit = (data) => {
-    console.log(data)
     signIn(data)
       .unwrap()
       .then((payload) => {
-        Cookies.set('token', payload.accessToken)
-        console.log(payload.accessToken)
+        Cookies.set("token", payload.accessToken)
+        signin(payload.user)
       })
       .catch((error) => console.error(error))
   }
 
   return (
     <main className={styles.main}>
-      <h3 className='title'>Selamat datang!</h3>
+      <h3 className="title">Selamat datang!</h3>
       <form className={styles.form}>
-        <label htmlFor='username' className={styles.label}>
+        <label htmlFor="username" className={styles.label}>
           Nama
         </label>
         <Controller
-          name='username'
+          name="username"
           control={control}
-          defaultValue=''
+          defaultValue=""
           render={({ field }) => (
             <input
               {...field}
-              type='text'
-              id='username'
+              type="text"
+              id="username"
               className={styles.input}
             />
           )}
         />
         <div className={styles.row}>
-          <label htmlFor='password' className={styles.label}>
+          <label htmlFor="password" className={styles.label}>
             Password
           </label>
           <Controller
-            name='password'
+            name="password"
             control={control}
-            defaultValue=''
+            defaultValue=""
             render={({ field }) => (
               <input
                 {...field}
-                type='password'
-                id='password'
+                type="password"
+                id="password"
                 className={styles.input}
               />
             )}
@@ -64,14 +65,14 @@ const SignInPage = () => {
         <div className={styles.divider} />
 
         <button
-          type='submit'
+          type="submit"
           className={styles.button}
           onClick={handleSubmit(onSubmit)}
         >
           Masuk
         </button>
 
-        <Link href='/sign-up' style={{ textDecoration: 'none' }}>
+        <Link href="/sign-up" style={{ textDecoration: "none" }}>
           <p className={styles.question}>
             Belum punya akun? <span>Daftar</span>.
           </p>
