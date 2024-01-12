@@ -1,19 +1,22 @@
 "use client"
 
+import { useGetRanksQuery } from "@/store/api/matrixApi"
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
+import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { NumericFormat } from "react-number-format"
 
 const ReportPage = () => {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      tahun: 2024,
-      data: 25,
-    },
+  const router = useRouter()
+
+  const [query, setQuery] = useState({ tahun: 2024, size: 25 })
+
+  const { data, refetch } = useGetRanksQuery({
+    tahun: query.tahun,
+    size: query.size,
   })
 
-  const data = [{ no: 1, tahun: "2024", nik: "123131233", nama: "Dwi" }]
   const columns = useMemo(
     () => [
       { accessorKey: "kode", header: "Kode", size: 50 },
@@ -27,8 +30,12 @@ const ReportPage = () => {
     []
   )
 
-  const onSubmit = (value) => {
-    console.log(value)
+  const handleExport = () => {
+    router.push(`/pdf?method=laporan&tahun=${query.tahun}&size=${query.size}`)
+  }
+
+  const handleSearch = () => {
+    refetch()
   }
 
   return (
@@ -40,53 +47,49 @@ const ReportPage = () => {
 
       <div className="report">
         <div className="search-report">
-          <Controller
-            control={control}
+          <NumericFormat
             name="tahun"
-            render={({ field }) => (
-              <NumericFormat
-                name="tahun"
-                inputProps={{ maxLength: 15 }}
-                value={field.value}
-                allowNegative={false}
-                onValueChange={(value) => {
-                  const parsedValue = parseInt(value.value)
-                  field.onChange(isNaN(parsedValue) ? null : parsedValue)
-                }}
-                fullWidth
-              />
-            )}
+            inputProps={{ maxLength: 15 }}
+            value={query.tahun}
+            allowNegative={false}
+            onValueChange={(value) => {
+              const parsedValue = parseInt(value.value)
+              setQuery((prev) => ({
+                ...prev,
+                tahun: isNaN(parsedValue) ? null : parsedValue,
+              }))
+            }}
+            fullWidth
           />
-          <Controller
-            control={control}
-            name="data"
-            render={({ field }) => (
-              <NumericFormat
-                name="data"
-                inputProps={{ maxLength: 15 }}
-                value={field.value}
-                allowNegative={false}
-                onValueChange={(value) => {
-                  const parsedValue = parseInt(value.value)
-                  field.onChange(isNaN(parsedValue) ? null : parsedValue)
-                }}
-                fullWidth
-              />
-            )}
+          <NumericFormat
+            name="size"
+            inputProps={{ maxLength: 15 }}
+            value={query.size}
+            allowNegative={false}
+            onValueChange={(value) => {
+              const parsedValue = parseInt(value.value)
+              setQuery((prev) => ({
+                ...prev,
+                size: isNaN(parsedValue) ? null : parsedValue,
+              }))
+            }}
+            fullWidth
           />
-          <button className="button" onClick={handleSubmit(onSubmit)}>
+          <button className="button" onClick={handleSearch}>
             Cari
           </button>
         </div>
         <div>
-          <button className="button">Eksport</button>
+          <button className="button" onClick={handleExport}>
+            Eksport
+          </button>
         </div>
       </div>
 
       {/* Table */}
       <div className="table">
         <MaterialReactTable
-          data={data}
+          data={data || []}
           columns={columns}
           enableBottomToolbar={false}
           enableTopToolbar={false}
@@ -95,5 +98,53 @@ const ReportPage = () => {
     </main>
   )
 }
+
+const data = [
+  {
+    no: 1,
+    tahun: "2024",
+    nik: "123131233",
+    nama: "Dwi",
+    divisi: "IT",
+    hasil: 10,
+    rank: 1,
+  },
+  {
+    no: 2,
+    tahun: "2024",
+    nik: "123131233",
+    nama: "Budi",
+    divisi: "Security",
+    hasil: 9,
+    rank: 2,
+  },
+  {
+    no: 3,
+    tahun: "2024",
+    nik: "123131233",
+    nama: "Andri",
+    divisi: "Audit",
+    hasil: 8,
+    rank: 3,
+  },
+  {
+    no: 4,
+    tahun: "2024",
+    nik: "123131233",
+    nama: "Okta",
+    divisi: "Finance",
+    hasil: 7,
+    rank: 4,
+  },
+  {
+    no: 5,
+    tahun: "2024",
+    nik: "123131233",
+    nama: "Indro",
+    divisi: "IT",
+    hasil: 6,
+    rank: 5,
+  },
+]
 
 export default ReportPage

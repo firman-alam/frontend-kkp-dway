@@ -7,8 +7,9 @@ import {
   useGetAllCriteriaQuery,
   useLazyGetCriteriaQuery,
 } from "@/store/api/criteriaApi"
+import { AuthContext } from "@/utils/authContext"
 import { MaterialReactTable } from "material-react-table"
-import { useMemo, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
 
 const CriteriaPage = () => {
@@ -17,10 +18,24 @@ const CriteriaPage = () => {
   const [openModalDelete, setOpenModalDelete] = useState(false)
   const [idEdit, setIdEdit] = useState(0)
 
+  const { getUser } = useContext(AuthContext)
+  const user = getUser()
+
   const { data: criterias } = useGetAllCriteriaQuery()
   const { data: criteria } = useLazyGetCriteriaQuery()
 
-  const data = []
+  const handleModalAdd = () => {
+    setOpenModalAdd((prev) => !prev)
+  }
+
+  const handleModalEdit = () => {
+    setOpenModalEdit((prev) => !prev)
+  }
+
+  const handleModalDelete = () => {
+    setOpenModalDelete((prev) => !prev)
+  }
+
   const columns = useMemo(
     () => [
       { accessorKey: "no", header: "No." },
@@ -37,7 +52,8 @@ const CriteriaPage = () => {
               <button
                 className="button green-button"
                 onClick={() => {
-                  console.log(params.row.original)
+                  handleModalEdit()
+                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Edit <FaPen />
@@ -45,7 +61,8 @@ const CriteriaPage = () => {
               <button
                 className="button red-button"
                 onClick={() => {
-                  console.log(params.row.original)
+                  handleModalDelete()
+                  setIdEdit(params.row.original.id_kriteria)
                 }}
               >
                 Hapus <FaTrash />
@@ -57,18 +74,6 @@ const CriteriaPage = () => {
     ],
     []
   )
-
-  const handleModalAdd = () => {
-    setOpenModalAdd((prev) => !prev)
-  }
-
-  const handleModalEdit = () => {
-    setOpenModalEdit((prev) => !prev)
-  }
-
-  const handleModalDelete = () => {
-    setOpenModalDelete((prev) => !prev)
-  }
 
   return (
     <main className="main">

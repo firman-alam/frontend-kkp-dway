@@ -1,16 +1,32 @@
+import { useDeleteCriteriaMutation } from "@/store/api/criteriaApi"
+import { useDeleteNilaiMutation } from "@/store/api/matrixApi"
+import { useDeletePegawaiMutation } from "@/store/api/pegawaiApi"
 import { Box, Dialog, Paper } from "@mui/material"
 import { FaQuestionCircle } from "react-icons/fa"
 import { MdClose } from "react-icons/md"
 
 const ModalDelete = ({ open, onClose, id, title }) => {
+  const [deleteKriteria] = useDeleteCriteriaMutation()
+  const [deleteNilai] = useDeleteNilaiMutation()
+  const [deletePegawai] = useDeletePegawaiMutation()
+
   const handleDelete = () => {
     switch (title) {
       case "pegawai":
-        break
+        deletePegawai({ id })
+          .unwrap()
+          .then((payload) => console.log(payload))
+          .catch((err) => console.log(err))
       case "nilai":
-        break
+        deleteNilai({ id })
+          .unwrap()
+          .then((payload) => console.log(payload))
+          .catch((err) => console.log(err))
       case "kriteria":
-        break
+        deleteKriteria({ id })
+          .unwrap()
+          .then((payload) => console.log(payload))
+          .catch((err) => console.log(err))
     }
   }
 

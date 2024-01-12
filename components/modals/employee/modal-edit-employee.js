@@ -3,6 +3,7 @@
 import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
+import { NumericFormat } from "react-number-format"
 
 export const ModalEditEmployee = ({ open, onClose, data }) => {
   const { control, handleSubmit } = useForm({
@@ -30,7 +31,7 @@ export const ModalEditEmployee = ({ open, onClose, data }) => {
         }}
       >
         <Box className="modal-title">
-          <p>Tambah Pegawai</p>
+          <p>Edit Pegawai</p>
           <button className="button" onClick={onClose}>
             <MdClose />
           </button>
@@ -53,7 +54,17 @@ export const ModalEditEmployee = ({ open, onClose, data }) => {
                 name="nik"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="nik" className="input" />
+                  <NumericFormat
+                    name="nik"
+                    className="input"
+                    inputProps={{ maxLength: 15 }}
+                    value={field.value}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      const parsedValue = parseInt(value.value)
+                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
+                    }}
+                  />
                 )}
               />
             </div>

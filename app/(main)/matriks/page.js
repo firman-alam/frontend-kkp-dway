@@ -13,58 +13,58 @@ import { MaterialReactTable } from "material-react-table"
 import { useMemo, useState } from "react"
 import { FaPen, FaPlus, FaTrash } from "react-icons/fa"
 
-// const criteria = [
-//   { id_kriteria: 1, code: "C1" },
-//   { id_kriteria: 2, code: "C2" },
-//   { id_kriteria: 3, code: "C3" },
-//   { id_kriteria: 4, code: "C4" },
-//   { id_kriteria: 5, code: "C5" },
-// ]
+const criteria = [
+  { id_kriteria: 1, code: "C1" },
+  { id_kriteria: 2, code: "C2" },
+  { id_kriteria: 3, code: "C3" },
+  { id_kriteria: 4, code: "C4" },
+  { id_kriteria: 5, code: "C5" },
+]
 
-// const nilai = [
-//   {
-//     id_nilai: 1,
-//     no: 1,
-//     tahun: 2024,
-//     nik: 3123131231231,
-//     nama: "Dwi",
-//     details: [
-//       { id_kriteria: 1, kode: "C1", nilai: 10 },
-//       { id_kriteria: 2, kode: "C2", nilai: 10 },
-//       { id_kriteria: 3, kode: "C3", nilai: 10 },
-//       { id_kriteria: 4, kode: "C4", nilai: 10 },
-//       { id_kriteria: 5, kode: "C5", nilai: 10 },
-//     ],
-//   },
-//   {
-//     id_nilai: 2,
-//     no: 2,
-//     tahun: 2024,
-//     nik: 3123132135464,
-//     nama: "Seti",
-//     details: [
-//       { id_kriteria: 1, kode: "C1", nilai: 10 },
-//       { id_kriteria: 2, kode: "C2", nilai: 10 },
-//       { id_kriteria: 3, kode: "C3", nilai: 10 },
-//       { id_kriteria: 4, kode: "C4", nilai: 10 },
-//       { id_kriteria: 5, kode: "C5", nilai: 10 },
-//     ],
-//   },
-//   {
-//     id_nilai: 3,
-//     no: 3,
-//     tahun: 2024,
-//     nik: 312313124765,
-//     nama: "Budi",
-//     details: [
-//       { id_kriteria: 1, kode: "C1", nilai: 10 },
-//       { id_kriteria: 2, kode: "C2", nilai: 10 },
-//       { id_kriteria: 3, kode: "C3", nilai: 10 },
-//       { id_kriteria: 4, kode: "C4", nilai: 10 },
-//       { id_kriteria: 5, kode: "C5", nilai: 10 },
-//     ],
-//   },
-// ]
+const data = [
+  {
+    id_nilai: 1,
+    no: 1,
+    tahun: 2024,
+    nik: 3123131231231,
+    nama: "Dwi",
+    details: [
+      { id_kriteria: 1, kode: "C1", nilai: 10 },
+      { id_kriteria: 2, kode: "C2", nilai: 10 },
+      { id_kriteria: 3, kode: "C3", nilai: 10 },
+      { id_kriteria: 4, kode: "C4", nilai: 10 },
+      { id_kriteria: 5, kode: "C5", nilai: 10 },
+    ],
+  },
+  {
+    id_nilai: 2,
+    no: 2,
+    tahun: 2024,
+    nik: 3123132135464,
+    nama: "Seti",
+    details: [
+      { id_kriteria: 1, kode: "C1", nilai: 10 },
+      { id_kriteria: 2, kode: "C2", nilai: 10 },
+      { id_kriteria: 3, kode: "C3", nilai: 10 },
+      { id_kriteria: 4, kode: "C4", nilai: 10 },
+      { id_kriteria: 5, kode: "C5", nilai: 10 },
+    ],
+  },
+  {
+    id_nilai: 3,
+    no: 3,
+    tahun: 2024,
+    nik: 312313124765,
+    nama: "Budi",
+    details: [
+      { id_kriteria: 1, kode: "C1", nilai: 10 },
+      { id_kriteria: 2, kode: "C2", nilai: 10 },
+      { id_kriteria: 3, kode: "C3", nilai: 10 },
+      { id_kriteria: 4, kode: "C4", nilai: 10 },
+      { id_kriteria: 5, kode: "C5", nilai: 10 },
+    ],
+  },
+]
 
 const MatrixPage = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false)
@@ -72,8 +72,8 @@ const MatrixPage = () => {
   const [openModalDelete, setOpenModalDelete] = useState(false)
   const [idEdit, setIdEdit] = useState(0)
 
-  const { data: criteria } = useGetAllCriteriaQuery()
-  const { data } = useGetAllNilaiQuery()
+  // const { data: criteria } = useGetAllCriteriaQuery()
+  // const { data } = useGetAllNilaiQuery()
   const { data: nilai } = useLazyGetNilaiQuery()
   const { data: matriks } = useGetMatriksQuery()
 

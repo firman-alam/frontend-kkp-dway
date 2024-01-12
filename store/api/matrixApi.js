@@ -6,20 +6,20 @@ export const matrixApi = omniApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllNilai: builder.query({
       query: () => `matrix/nilai`,
-      providesTags: ["Nilai"],
+      providesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     getNilai: builder.query({
       query: ({ id }) => ({
         url: `matrix/nilai/${id}`,
       }),
-      providesTags: ["Nilai"],
+      providesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     getMatriks: builder.query({
       query: () => `matrix`,
-      providesTags: ["Nilai"],
+      providesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     addNilai: builder.mutation({
-      query: ({ data }) => ({
+      query: (data) => ({
         url: `matrix/nilai`,
         method: "POST",
         body: { ...data },
@@ -27,7 +27,7 @@ export const matrixApi = omniApi.injectEndpoints({
       invalidatesTags: ["Nilai"],
     }),
     updateNilai: builder.mutation({
-      query: ({ data }) => ({
+      query: (data) => ({
         url: `matrix/nilai`,
         method: "PATCH",
         body: { ...data },
@@ -41,6 +41,11 @@ export const matrixApi = omniApi.injectEndpoints({
       }),
       invalidatesTags: ["Nilai"],
     }),
+    getRanks: builder.query({
+      query: ({ tahun = 2024, size = 25 }) =>
+        `matrix/rank?tahun=${tahun}&size=${size}}`,
+      providesTags: ["Nilai", "Kriteria", "Pegawai"],
+    }),
   }),
 })
 
@@ -51,4 +56,6 @@ export const {
   useAddNilaiMutation,
   useUpdateNilaiMutation,
   useDeleteNilaiMutation,
+  useGetRanksQuery,
+  useLazyGetRanksQuery,
 } = matrixApi

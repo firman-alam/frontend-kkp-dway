@@ -6,8 +6,10 @@ import { Box, Dialog, Paper } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { MdClose } from "react-icons/md"
 
-export const ModalEditNilai = ({ open, onClose }) => {
-  const { control, handleSubmit } = useForm()
+export const ModalEditNilai = ({ open, onClose, data }) => {
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {},
+  })
 
   const { data: employee } = useGetAllPegawaiQuery()
   const { data: criteria } = useGetAllCriteriaQuery()
@@ -27,7 +29,7 @@ export const ModalEditNilai = ({ open, onClose }) => {
         }}
       >
         <Box className="modal-title">
-          <p>Tambah Nilai</p>
+          <p>Edit Nilai</p>
           <button className="button" onClick={onClose}>
             <MdClose />
           </button>
@@ -45,15 +47,14 @@ export const ModalEditNilai = ({ open, onClose }) => {
             }}
           >
             <div className="row">
-              <label htmlFor="name">Nama</label>
+              <label htmlFor="id_pegawai">Nama</label>
               <Controller
-                name="role"
+                name="id_pegawai"
                 control={control}
-                defaultValue="admin" // Set default value if needed
                 render={({ field }) => (
-                  <select {...field} id="role" className="input">
+                  <select {...field} id="id_pegawai" className="input">
                     {employee?.map((e) => (
-                      <option value="admin" key={e.id_pegawai}>
+                      <option value={e.id_pegawai} key={e.id_pegawai}>
                         {e.nama + " - " + e.nik}
                       </option>
                     ))}
@@ -63,17 +64,32 @@ export const ModalEditNilai = ({ open, onClose }) => {
             </div>
             <div className="row">
               <label htmlFor="tahun">Tahun</label>
-              <input type="text" id="tahun" className="input" />
+              <Controller
+                control={control}
+                name="tahun"
+                render={({ field }) => (
+                  <NumericFormat
+                    name="tahun"
+                    inputProps={{ maxLength: 15 }}
+                    value={field.value}
+                    allowNegative={false}
+                    onValueChange={(value) => {
+                      const parsedValue = parseInt(value.value)
+                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
+                    }}
+                    fullWidth
+                  />
+                )}
+              />
             </div>
             {criteria?.map((c) => (
               <div className="row" key={c.id_kriteria}>
-                <label htmlFor="name">{c.nama}</label>
+                <label htmlFor="id_kriteria">{c.nama}</label>
                 <Controller
-                  name="role"
+                  name="id_kriteria"
                   control={control}
-                  defaultValue="admin" // Set default value if needed
                   render={({ field }) => (
-                    <select {...field} id="role" className="input">
+                    <select {...field} id="id_kriteria" className="input">
                       {optionsValue?.map((e) => (
                         <option value={e.value} key={e.value}>
                           {e.value}
