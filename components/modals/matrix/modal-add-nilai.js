@@ -6,6 +6,7 @@ import { useGetAllPegawaiQuery } from '@/store/api/pegawaiApi'
 import { Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
+import { NumericFormat } from 'react-number-format'
 
 export const ModalAddNilai = ({ open, onClose }) => {
   const { control, handleSubmit, setValue, getValues, reset } = useForm({

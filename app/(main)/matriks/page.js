@@ -51,66 +51,56 @@ const MatrixPage = () => {
       { accessorKey: 'nik', header: 'NIK', size: 70 },
       { accessorKey: 'nama', header: 'Nama', size: 70 },
     ],
-    []
+    [data]
   )
 
-  const columnsB = useMemo(() => {
-    return (
-      criteria?.map((c) => ({
-        accessorKey: `${c.id_kriteria}`,
-        header: `${c.code}`,
-        size: 100,
-        Cell: (params) => {
-          const details = params.row.original.details
-
-          const data = details.find((d) => d.id_kriteria === c.id_kriteria)
-
-          return data?.nilai
-        },
-      })) || []
-    )
-  }, [criteria])
-
-  const columnsAction = useMemo(
-    () => [
-      {
-        accessorKey: 'aksi',
-        header: 'Aksi',
-        size: 100,
-        Cell: (params) => {
-          return (
-            <div className='action-wrapper'>
-              <button
-                className='button green-button'
-                onClick={() => {
-                  setIdEdit(params.row.original.id_penilaian)
-                  handleModalEdit()
-                  getData({id: params.row.original.id_penilaian})
-                }}
-              >
-                Edit <FaPen />
-              </button>
-              <button
-                className='button red-button'
-                onClick={() => {
-                  setIdEdit(params.row.original.id_penilaian)
-                  handleModalDelete()
-                }}
-              >
-                Hapus <FaTrash />
-              </button>
-            </div>
-          )
-        },
+  const columns = useMemo(() => {
+    const criteriaColumns = criteria?.map((c) => ({
+      accessorKey: `${c.id_kriteria}`,
+      header: `${c.code}`,
+      size: 100,
+      Cell: (params) => {
+        const details = params.row.original.details;
+        const data = details.find((d) => d.id_kriteria === c.id_kriteria);
+        return data?.nilai;
       },
-    ],
-    []
-  )
-
+    })) || [];
+  
+    const actionColumn = {
+      accessorKey: 'aksi',
+      header: 'Aksi',
+      size: 100,
+      Cell: (params) => (
+        <div className='action-wrapper'>
+          <button
+            className='button green-button'
+            onClick={() => {
+              setIdEdit(params.row.original.id_penilaian);
+              handleModalEdit();
+              getData({ id: params.row.original.id_penilaian });
+            }}
+          >
+            Edit <FaPen />
+          </button>
+          <button
+            className='button red-button'
+            onClick={() => {
+              setIdEdit(params.row.original.id_penilaian);
+              handleModalDelete();
+            }}
+          >
+            Hapus <FaTrash />
+          </button>
+        </div>
+      ),
+    };
+  
+    return [...criteriaColumns, actionColumn];
+  }, [criteria, data]);
+  
   const allColumnsA = useMemo(() => {
-    const combinedColumns = [...columnsA, ...columnsB];
-    return [...combinedColumns, ...columnsAction];
-  }, [columnsA, columnsB, columnsAction]);
+    return [...columnsA, ...columns];
+  }, [columnsA, columns]);
 
   const columnsC = useMemo(
     () => [{ accessorKey: 'alternatif', header: 'Kode Alternatif' }],
@@ -142,7 +132,7 @@ const MatrixPage = () => {
   return (
     <main className='main'>
       {/* Header */}
-      <h3 className='title-black'>Matriks</h3>
+      <h3 className='title-black'>Nilai Alternatif</h3>
       {/* Divider */}
       <div className='divider' />
 
@@ -161,6 +151,12 @@ const MatrixPage = () => {
           columns={allColumnsA}
           enableBottomToolbar={false}
           enableTopToolbar={false}
+          initialState={{
+            columnOrder: [
+              ...allColumnsA.map(column => column.accessorKey), 
+              'aksi', 
+            ],
+          }}
         />
       </div>
 

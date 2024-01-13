@@ -24,7 +24,7 @@ export const matrixApi = omniApi.injectEndpoints({
         method: "POST",
         body: { ...data },
       }),
-      invalidatesTags: ["Nilai"],
+      invalidatesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     updateNilai: builder.mutation({
       query: (data) => ({
@@ -32,14 +32,14 @@ export const matrixApi = omniApi.injectEndpoints({
         method: "PATCH",
         body: { ...data },
       }),
-      invalidatesTags: ["Nilai"],
+      invalidatesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     deleteNilai: builder.mutation({
       query: ({ id }) => ({
         url: `matrix/nilai/${id}`,
         method: "Delete",
       }),
-      invalidatesTags: ["Nilai"],
+      invalidatesTags: ["Nilai", "Kriteria", "Pegawai"],
     }),
     getRanks: builder.query({
       query: ({ tahun = 2024, size = 25 }) =>

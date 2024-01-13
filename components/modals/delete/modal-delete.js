@@ -15,12 +15,15 @@ const ModalDelete = ({ open, onClose, id, title }) => {
       case "pegawai":
         deletePegawai({ id }).unwrap().then((payload) => {}).catch((err) => console.log(err))
         onClose()
+        break
       case "nilai":
         deleteNilai({ id }).unwrap().then((payload) => {}).catch((err) => console.log(err))
         onClose()
+        break
       case "kriteria":
         deleteKriteria({ id }).unwrap().then(() => {}).catch((err) => console.log(err))
         onClose()
+        break
     }
   }
 
