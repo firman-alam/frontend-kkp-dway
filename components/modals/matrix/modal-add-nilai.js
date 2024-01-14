@@ -7,130 +7,193 @@ import { Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
 import { NumericFormat } from 'react-number-format'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-export const ModalAddNilai = ({ open, onClose }) => {
-  const { control, handleSubmit, setValue, getValues, reset } = useForm({
-    defaultValues: {
-      tahun: '2024',
-      details: []
-    }
-  })
-  
+export const ModalAddNilai = ({ open, onClose, data }) => {
   const { data: employee } = useGetAllPegawaiQuery()
   const { data: criteria } = useGetAllCriteriaQuery()
   const [addData] = useAddNilaiMutation()
 
+  const criteriaSchema = {}
+  criteria?.forEach((c) => {
+    const fieldName = `details_${c.id_kriteria}`
+    criteriaSchema[fieldName] = z
+      .number()
+      .refine((data) => data !== 0, { message: `Harap pilih ${c.nama}` })
+  })
+
+  const schema = z.object({
+    id_pegawai: z
+      .number()
+      .refine((data) => data !== 0, { message: 'Harap pilih Nama' }),
+    tahun: z.number(),
+    ...criteriaSchema,
+  })
+
+  const { control, handleSubmit, formState, setValue, getValues, reset } =
+    useForm({
+      resolver: zodResolver(schema),
+      defaultValues: {
+        tahun: 2024,
+        details: [],
+      },
+    })
+
   const onSubmit = (value) => {
-    addData(value).unwrap().then(payload => {}).catch(err => console.log(err))
+    addData(value)
+      .unwrap()
+      .then((payload) => {})
+      .catch((err) => console.log(err))
     onClose()
     reset()
   }
 
   const handleSelectChange = (criterionId, selectedValue) => {
-    setValue('details', { ...getValues('details'), [criterionId]: selectedValue });
-  };
+    setValue('details', {
+      ...getValues('details'),
+      [criterionId]: selectedValue,
+    })
+  }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"md"}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
       <Box
         component={Paper}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '1rem',
         }}
       >
-        <Box className="modal-title">
+        <Box className='modal-title'>
           <p>Tambah Nilai</p>
-          <button className="button" onClick={onClose}>
+          <button className='button' onClick={onClose}>
             <MdClose />
           </button>
         </Box>
 
-        <div className="divider" />
+        <div className='divider' />
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              marginY: "1rem",
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              marginY: '1rem',
             }}
           >
-            <div className="row">
-              <label htmlFor="id_pegawai">Nama</label>
+            <div className='row'>
+              <label htmlFor='id_pegawai'>Nama</label>
               <Controller
-                name="id_pegawai"
+                name='id_pegawai'
                 control={control}
                 render={({ field }) => (
-                  <select {...field} id="id_pegawai" className="input">
-                    <option value={0}>Harap Pilih</option>
-                    {employee?.map((e) => (
-                      <option value={e.id_pegawai} key={e.id_pegawai}>
-                        {e.nama + " - " + e.nik}
-                      </option>
-                    ))}
-                  </select>
+                  <>
+                    <select {...field} id='id_pegawai' className='input'>
+                      <option value={0}>Harap Pilih</option>
+                      {employee?.map((e) => {
+                        const isIdPegawaiExists = data?.some(
+                          (d) => d.id_pegawai === e.id_pegawai
+                        )
+
+                        if (!isIdPegawaiExists) {
+                          return (
+                            <option value={e.id_pegawai} key={e.id_pegawai}>
+                              {e.nama + ' - ' + e.nik}
+                            </option>
+                          )
+                        }
+
+                        return null
+                      })}
+                    </select>
+                    {formState.errors.id_pegawai && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.id_pegawai.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
-            <div className="row">
-              <label htmlFor="tahun">Tahun</label>
+            <div className='row'>
+              <label htmlFor='tahun'>Tahun</label>
               <Controller
                 control={control}
-                name="tahun"
+                name='tahun'
                 render={({ field }) => (
-                  <NumericFormat
-                    name="tahun"
-                    className="input"
-                    inputProps={{ maxLength: 15 }}
-                    value={field.value}
-                    allowNegative={false}
-                    onValueChange={(value) => {
-                      const parsedValue = parseInt(value.value)
-                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
-                    }}
-                    fullWidth
-                  />
+                  <>
+                    <NumericFormat
+                      name='tahun'
+                      className='input'
+                      inputProps={{ maxLength: 15 }}
+                      value={field.value}
+                      allowNegative={false}
+                      onValueChange={(value) => {
+                        const parsedValue = parseInt(value.value)
+                        field.onChange(isNaN(parsedValue))
+                      }}
+                      fullWidth
+                    />
+                    {formState.errors.tahun && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.tahun.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
             {criteria?.map((c) => (
-              <div className="row" key={c.id_kriteria}>
+              <div className='row' key={c.id_kriteria}>
                 <label htmlFor={`details_${c.id_kriteria}`}>{c.nama}</label>
                 <Controller
                   name={`details_${c.id_kriteria}`}
                   control={control}
                   render={({ field }) => (
-                    <select
-                      {...field}
-                      onChange={(e) => handleSelectChange(c.id_kriteria, e.target.value)}
-                      id={`details_${c.id_kriteria}`}
-                      className="input"
-                    >
-                      <option value={0}>Harap Pilih</option>
-                      {optionsValue?.map((e) => (
-                        <option value={e.value} key={e.value}>
-                          {e.label}
-                        </option>
-                      ))}
-                    </select>
+                    <>
+                      <select
+                        {...field}
+                        onChange={(e) =>
+                          handleSelectChange(c.id_kriteria, e.target.value)
+                        }
+                        id={`details_${c.id_kriteria}`}
+                        className='input'
+                      >
+                        <option value={0}>Harap Pilih</option>
+                        {optionsValue?.map((e) => (
+                          <option value={e.value} key={e.value}>
+                            {e.label}
+                          </option>
+                        ))}
+                      </select>
+                      {formState.errors[`details_${c.id_kriteria}`] && (
+                        <span style={{ color: 'red' }}>
+                          {formState.errors[`details_${c.id_kriteria}`].message}
+                        </span>
+                      )}
+                    </>
                   )}
                 />
               </div>
             ))}
           </Box>
 
-          <div className="modal-button">
+          <div className='modal-button'>
             <button
-              type="button"
-              className="button red-button"
+              type='button'
+              className='button red-button'
               onClick={onClose}
             >
               Batal
             </button>
-            <button type="submit" className="button green-button" onClick={handleSubmit(onSubmit)}>
+            <button
+              type='submit'
+              className='button green-button'
+              onClick={handleSubmit(onSubmit)}
+            >
               Tambah
             </button>
           </div>
@@ -141,24 +204,9 @@ export const ModalAddNilai = ({ open, onClose }) => {
 }
 
 const optionsValue = [
+  { value: 1, label: 1 },
+  { value: 2, label: 2 },
+  { value: 3, label: 3 },
+  { value: 4, label: 4 },
   { value: 5, label: 5 },
-  { value: 10, label: 10 },
-  { value: 15, label: 15 },
-  { value: 20, label: 20 },
-  { value: 25, label: 25 },
-  { value: 30, label: 30 },
-  { value: 35, label: 35 },
-  { value: 40, label: 40 },
-  { value: 45, label: 45 },
-  { value: 50, label: 50 },
-  { value: 55, label: 55 },
-  { value: 60, label: 60 },
-  { value: 65, label: 65 },
-  { value: 70, label: 70 },
-  { value: 75, label: 75 },
-  { value: 80, label: 80 },
-  { value: 85, label: 85 },
-  { value: 90, label: 90 },
-  { value: 95, label: 95 },
-  { value: 100, label: 100 },
 ]

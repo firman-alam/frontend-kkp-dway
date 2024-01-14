@@ -2,142 +2,192 @@
 
 import { useAddPegawaiMutation } from '@/store/api/pegawaiApi'
 import { Box, Dialog, Paper } from '@mui/material'
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
-import { NumericFormat } from "react-number-format"
+import { NumericFormat } from 'react-number-format'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const schema = z.object({
+  nik: z.number(),
+  nama: z.string(),
+  alamat: z.string(),
+  no_telepon: z.string(),
+  divisi: z.string(),
+})
 
 export const ModalAddEmployee = ({ open, onClose }) => {
-  const { control, handleSubmit, reset } = useForm()
+  const { control, handleSubmit, formState, reset } = useForm({
+    resolver: zodResolver(schema),
+  })
 
   const [addPegawai] = useAddPegawaiMutation()
 
   const onSubmit = (value) => {
     console.log(value)
-    addPegawai(value).unwrap().then(payload => {
-      console.log(payload)
-      reset()
-      onClose()
-    }).catch(err => console.log(err))
+    addPegawai(value)
+      .unwrap()
+      .then((payload) => {
+        console.log(payload)
+        reset()
+        onClose()
+      })
+      .catch((err) => console.log(err))
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={"md"}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
       <Box
         component={Paper}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '1rem',
         }}
       >
-        <Box className="modal-title">
+        <Box className='modal-title'>
           <p>Tambah Pegawai</p>
-          <button className="button" onClick={onClose}>
+          <button className='button' onClick={onClose}>
             <MdClose />
           </button>
         </Box>
 
-        <div className="divider" />
+        <div className='divider' />
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              marginY: "1rem",
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              marginY: '1rem',
             }}
           >
-            <div className="row">
-              <label htmlFor="nik">NIK</label>
+            <div className='row'>
+              <label htmlFor='nik'>NIK</label>
               <Controller
-                name="nik"
+                name='nik'
                 control={control}
                 render={({ field }) => (
-                  <NumericFormat
-                    name="nik"
-                    className="input"
-                    inputProps={{ maxLength: 15 }}
-                    value={field.value}
-                    allowNegative={false}
-                    onValueChange={(value) => {
-                      const parsedValue = parseInt(value.value)
-                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
-                    }}
-                  />
+                  <>
+                    <NumericFormat
+                      name='nik'
+                      className='input'
+                      inputProps={{ maxLength: 15 }}
+                      value={field.value}
+                      allowNegative={false}
+                      onValueChange={(value) => {
+                        const parsedValue = parseInt(value.value)
+                        field.onChange(isNaN(parsedValue) ? null : parsedValue)
+                      }}
+                    />
+                    {formState.errors.nik && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.nik.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
 
-            <div className="row">
-              <label htmlFor="nama">Nama</label>
+            <div className='row'>
+              <label htmlFor='nama'>Nama</label>
               <Controller
-                name="nama"
+                name='nama'
                 control={control}
                 render={({ field }) => (
-                  <input {...field} type="text" id="nama" className="input" />
+                  <>
+                    <input {...field} type='text' id='nama' className='input' />
+                    {formState.errors.nama && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.nama.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
 
-            <div className="row">
-              <label htmlFor="address">Alamat</label>
+            <div className='row'>
+              <label htmlFor='address'>Alamat</label>
               <Controller
-                name="alamat"
+                name='alamat'
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    id="address"
-                    className="input"
-                  />
+                  <>
+                    <input
+                      {...field}
+                      type='text'
+                      id='address'
+                      className='input'
+                    />
+                    {formState.errors.alamat && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.alamat.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
 
-            <div className="row">
-              <label htmlFor="phoneNumber">No. Telepon</label>
+            <div className='row'>
+              <label htmlFor='phoneNumber'>No. Telepon</label>
               <Controller
-                name="no_telepon"
+                name='no_telepon'
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    id="phoneNumber"
-                    className="input"
-                  />
+                  <>
+                    <input
+                      {...field}
+                      type='text'
+                      id='phoneNumber'
+                      className='input'
+                    />
+                    {formState.errors.no_telepon && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.no_telepon.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
 
-            <div className="row">
-              <label htmlFor="division">Divisi</label>
+            <div className='row'>
+              <label htmlFor='division'>Divisi</label>
               <Controller
-                name="divisi"
+                name='divisi'
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type="text"
-                    id="division"
-                    className="input"
-                  />
+                  <>
+                    <input
+                      {...field}
+                      type='text'
+                      id='division'
+                      className='input'
+                    />
+                    {formState.errors.divisi && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.divisi.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
           </Box>
 
-          <div className="modal-button">
+          <div className='modal-button'>
             <button
-              type="button"
-              className="button red-button"
+              type='button'
+              className='button red-button'
               onClick={onClose}
             >
               Batal
             </button>
-            <button type="submit" className="button green-button">
+            <button type='submit' className='button green-button'>
               Tambah
             </button>
           </div>

@@ -46,22 +46,6 @@ const SignUpPage = () => {
           />
         </div>
         <div className={styles.row}>
-          <label htmlFor='role' className={styles.label}>
-            Role
-          </label>
-          <Controller
-            name='role'
-            control={control}
-            defaultValue='admin' // Set default value if needed
-            render={({ field }) => (
-              <select {...field} id='role' className={styles.input}>
-                <option value='admin'>Admin</option>
-                <option value='pimpinan'>Pimpinan</option>
-              </select>
-            )}
-          />
-        </div>
-        <div className={styles.row}>
           <label htmlFor='password' className={styles.label}>
             Password
           </label>

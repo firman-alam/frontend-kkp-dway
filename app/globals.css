@@ -2,7 +2,7 @@
 
 :root,
 body {
-  height: 100vh;
+  height: 100%;
   padding: 0;
 }
 
@@ -34,14 +34,14 @@ body {
 
 .title {
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
   color: #fff;
   margin-bottom: 1rem;
 }
 
 .title-black {
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
   color: #000;
   margin-bottom: 1rem;
 }
@@ -88,7 +88,7 @@ body {
 }
 
 .table {
-  /* width: 70%; */
+  width: 100%;
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
@@ -96,7 +96,7 @@ body {
 .title-table {
   font-size: 20px;
   font-weight: 500;
-  color: #fff;
+  color: #000;
   margin-bottom: 1rem;
 }
 

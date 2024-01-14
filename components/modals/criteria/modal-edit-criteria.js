@@ -5,10 +5,21 @@ import { Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
 import { NumericFormat } from 'react-number-format'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const schema = z.object({
+  code: z.string(),
+  nama: z.string(),
+  bobot: z.number(),
+  tipe: z.string(),
+})
 
 export const ModalEditCriteria = ({ open, onClose, data }) => {
   const [updateData] = useUpdateCriteriaMutation()
-  const { control, handleSubmit } = useForm({
+
+  const { control, handleSubmit, formState, reset } = useForm({
+    resolver: zodResolver(schema),
     defaultValues: {
       id_kriteria: data?.id_kriteria,
       kode: data?.code,
@@ -19,7 +30,10 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
   })
 
   const onSubmit = (value) => {
-    updateData(value).unwrap().then(() => {}).catch(err => console.log(err))
+    updateData(value)
+      .unwrap()
+      .then(() => {})
+      .catch((err) => console.log(err))
     console.log(value)
     onClose()
   }
@@ -53,18 +67,19 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
             }}
           >
             <div className='row'>
-              <label htmlFor='kode'>Kode</label>
+              <label htmlFor='code'>Kode</label>
               <Controller
-                name='kode'
+                name='code'
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type='text'
-                    id='kode'
-                    className='input'
-                    value={field.value}
-                  />
+                  <>
+                    <input {...field} type='text' id='code' className='input' />
+                    {formState.errors.code && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.code.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
@@ -75,13 +90,14 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
                 name='nama'
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    type='text'
-                    id='nama'
-                    className='input'
-                    value={field.value}
-                  />
+                  <>
+                    <input {...field} type='text' id='nama' className='input' />
+                    {formState.errors.nama && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.nama.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
@@ -92,17 +108,24 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
                 name='bobot'
                 control={control}
                 render={({ field }) => (
-                  <NumericFormat
-                    name='bobot'
-                    className='input'
-                    inputProps={{ maxLength: 15 }}
-                    value={field.value}
-                    allowNegative={false}
-                    onValueChange={(value) => {
-                      const parsedValue = parseInt(value.value)
-                      field.onChange(isNaN(parsedValue) ? null : parsedValue)
-                    }}
-                  />
+                  <>
+                    <NumericFormat
+                      name='bobot'
+                      className='input'
+                      inputProps={{ maxLength: 15 }}
+                      value={field.value}
+                      allowNegative={false}
+                      onValueChange={(value) => {
+                        const parsedValue = parseInt(value.value)
+                        field.onChange(parsedValue)
+                      }}
+                    />
+                    {formState.errors.bobot && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.bobot.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
@@ -112,11 +135,19 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
               <Controller
                 name='tipe'
                 control={control}
+                defaultValue='benefit'
                 render={({ field }) => (
-                  <select {...field} id='tipe' className='input'>
-                    <option value='benefit'>Benefit</option>
-                    <option value='cost'>Cost</option>
-                  </select>
+                  <>
+                    <select {...field} id='tipe' className='input'>
+                      <option value='benefit'>Benefit</option>
+                      <option value='cost'>Cost</option>
+                    </select>
+                    {formState.errors.tipe && (
+                      <span style={{ color: 'red' }}>
+                        {formState.errors.tipe.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </div>
@@ -130,7 +161,11 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
             >
               Batal
             </button>
-            <button type='submit' className='button green-button' onClick={handleSubmit(onSubmit)}>
+            <button
+              type='submit'
+              className='button green-button'
+              onClick={handleSubmit(onSubmit)}
+            >
               Simpan
             </button>
           </div>
