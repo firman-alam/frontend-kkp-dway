@@ -28,7 +28,7 @@ const SignInPage = () => {
 
   return (
     <main className={styles.main}>
-      <h3 className='title'>Selamat datang!</h3>
+      <h3 className='title'>Log In</h3>
       <form className={styles.form}>
         <label htmlFor='username' className={styles.label}>
           Nama

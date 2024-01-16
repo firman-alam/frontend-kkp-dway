@@ -33,7 +33,7 @@ export const ModalAddNilai = ({ open, onClose, data }) => {
 
   const { control, handleSubmit, formState, setValue, getValues, reset } =
     useForm({
-      resolver: zodResolver(schema),
+      // resolver: zodResolver(schema),
       defaultValues: {
         tahun: 2024,
         details: [],

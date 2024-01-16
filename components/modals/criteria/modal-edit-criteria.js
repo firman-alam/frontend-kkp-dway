@@ -11,18 +11,19 @@ import { zodResolver } from '@hookform/resolvers/zod'
 const schema = z.object({
   code: z.string(),
   nama: z.string(),
-  bobot: z.number(),
+  bobot: z.string(),
   tipe: z.string(),
 })
 
 export const ModalEditCriteria = ({ open, onClose, data }) => {
   const [updateData] = useUpdateCriteriaMutation()
+  console.log(data.id_kriteria)
 
   const { control, handleSubmit, formState, reset } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       id_kriteria: data?.id_kriteria,
-      kode: data?.code,
+      code: data?.code,
       nama: data?.nama,
       tipe: data?.tipe,
       bobot: data?.bobot,
@@ -30,11 +31,12 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
   })
 
   const onSubmit = (value) => {
+    value.id_kriteria = data?.id_kriteria
+
     updateData(value)
       .unwrap()
       .then(() => {})
       .catch((err) => console.log(err))
-    console.log(value)
     onClose()
   }
 
@@ -57,7 +59,7 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
 
         <div className='divider' />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <Box
             sx={{
               display: 'flex',
@@ -117,7 +119,7 @@ export const ModalEditCriteria = ({ open, onClose, data }) => {
                       allowNegative={false}
                       onValueChange={(value) => {
                         const parsedValue = parseInt(value.value)
-                        field.onChange(parsedValue)
+                        field.onChange(value.value)
                       }}
                     />
                     {formState.errors.bobot && (

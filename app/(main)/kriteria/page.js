@@ -45,10 +45,10 @@ const CriteriaPage = () => {
           return params.row.index + 1
         },
       },
-      { accessorKey: 'code', header: 'Kode' },
+      { accessorKey: 'code', header: 'Kode', size: 40 },
       { accessorKey: 'nama', header: 'Nama' },
-      { accessorKey: 'bobot', header: 'Bobot' },
-      { accessorKey: 'tipe', header: 'Tipe' },
+      { accessorKey: 'bobot', header: 'Bobot', size: 50 },
+      { accessorKey: 'tipe', header: 'Tipe', size: 50 },
       {
         accessorKey: 'aksi',
         header: 'Aksi',
@@ -60,7 +60,7 @@ const CriteriaPage = () => {
                 onClick={() => {
                   handleModalEdit()
                   setIdEdit(params.row.original.id_kriteria)
-                  getData({ id: params.row.original.id_kriteria})
+                  getData({ id: params.row.original.id_kriteria })
                 }}
               >
                 Edit <FaPen />

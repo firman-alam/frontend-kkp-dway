@@ -32,6 +32,7 @@ export const ModalEditEmployee = ({ open, onClose, data }) => {
   })
 
   const onSubmit = (value) => {
+    value.id_pegawai = data?.id_pegawai
     updateData(value)
       .unwrap()
       .then(() => {})
