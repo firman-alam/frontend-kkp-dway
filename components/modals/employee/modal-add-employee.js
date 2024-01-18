@@ -1,7 +1,7 @@
 'use client'
 
 import { useAddPegawaiMutation } from '@/store/api/pegawaiApi'
-import { Box, Dialog, Paper } from '@mui/material'
+import { Alert, Box, Dialog, Paper } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { MdClose } from 'react-icons/md'
 import { NumericFormat } from 'react-number-format'
@@ -24,15 +24,13 @@ export const ModalAddEmployee = ({ open, onClose }) => {
   const [addPegawai] = useAddPegawaiMutation()
 
   const onSubmit = (value) => {
-    console.log(value)
     addPegawai(value)
       .unwrap()
       .then((payload) => {
-        console.log(payload)
         reset()
         onClose()
       })
-      .catch((err) => console.log(err))
+      .catch((err) => alert(err.data.message))
   }
 
   return (
