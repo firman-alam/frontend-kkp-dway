@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 const schema = z.object({
   code: z.string(),
   nama: z.string(),
-  bobot: z.number(),
+  bobot: z.string(),
   tipe: z.string(),
 })
 
@@ -113,7 +113,7 @@ export const ModalAddCriteria = ({ open, onClose }) => {
                       allowNegative={false}
                       onValueChange={(value) => {
                         const parsedValue = parseInt(value.value)
-                        field.onChange(parsedValue)
+                        field.onChange(value.value)
                       }}
                     />
                     {formState.errors.bobot && (

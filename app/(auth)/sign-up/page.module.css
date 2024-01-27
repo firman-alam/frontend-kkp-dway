@@ -51,7 +51,9 @@
   font-size: medium;
   font-weight: bold;
 }
-
+.Masuk {
+      color: #00ffff;
+}
 .question {
   text-align: right;
   color: #fff;

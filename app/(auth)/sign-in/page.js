@@ -77,7 +77,10 @@ const SignInPage = () => {
 
         <Link href='/sign-up' style={{ textDecoration: 'none' }}>
           <p className={styles.question}>
-            Belum punya akun? <span>Daftar</span>.
+            Belum punya akun? 
+            <span className={styles.Daftar}>
+              Daftar
+            </span>
           </p>
         </Link>
       </form>

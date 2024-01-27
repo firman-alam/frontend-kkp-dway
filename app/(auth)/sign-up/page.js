@@ -76,7 +76,10 @@ const SignUpPage = () => {
 
         <Link href='/sign-in' style={{ textDecoration: 'none' }}>
           <p className={styles.question}>
-            Sudah punya akun? <span>Masuk</span>.
+            Sudah punya akun? 
+            <span className={styles.Masuk}>
+              Masuk
+            </span>
           </p>
         </Link>
       </form>

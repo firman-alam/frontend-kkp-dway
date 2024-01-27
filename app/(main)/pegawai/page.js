@@ -103,6 +103,18 @@ const EmployeePage = () => {
           enableBottomToolbar={false}
           enableTopToolbar={false}
           enableColumnFilters={false}
+          muiTableBodyCellProps={{
+            sx: {
+              background: 'whitesmoke',
+              color: 'black',
+              fontWeight: ''
+            }
+          }}
+          muiTableHeadCellProps={{
+            sx: {
+              background: 'whitesmoke'
+            }
+          }}
         />
       </div>
 

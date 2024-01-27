@@ -51,7 +51,9 @@
   font-size: medium;
   font-weight: bold;
 }
-
+.Daftar{
+  color:aqua;
+}
 .question {
   text-align: right;
   color: #fff;
