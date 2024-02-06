@@ -5,29 +5,31 @@ import styles from './page.module.css'
 import { useSignInMutation } from '@/store/api/authApi'
 import { Controller, useForm } from 'react-hook-form'
 import Cookies from 'js-cookie'
-import { AuthContext } from '@/utils/authContext'
-import { useContext } from 'react'
 import { useRouter } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const SignInPage = () => {
   const router = useRouter()
   const [signIn] = useSignInMutation()
   const { control, handleSubmit } = useForm()
-  // const { signin } = useContext(AuthContext)
 
   const onSubmit = (data) => {
     signIn(data)
       .unwrap()
       .then((payload) => {
+        console.log(payload)
         Cookies.set('token', payload.accessToken)
-        // signin(payload.user)
         router.push('/pegawai')
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        toast.error(error.data.message)
+      })
   }
 
   return (
     <main className={styles.main}>
+      <ToastContainer />
       <h3 className='title'>Log In</h3>
       <form className={styles.form}>
         <label htmlFor='username' className={styles.label}>
@@ -75,14 +77,12 @@ const SignInPage = () => {
           Masuk
         </button>
 
-        <Link href='/sign-up' style={{ textDecoration: 'none' }}>
+        {/* <Link href='/sign-up' style={{ textDecoration: 'none' }}>
           <p className={styles.question}>
-            Belum punya akun? 
-            <span className={styles.Daftar}>
-              Daftar
-            </span>
+            Belum punya akun?
+            <span className={styles.Daftar}>Daftar</span>
           </p>
-        </Link>
+        </Link> */}
       </form>
     </main>
   )

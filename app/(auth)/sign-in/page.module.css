@@ -50,9 +50,10 @@
   color: #fff;
   font-size: medium;
   font-weight: bold;
+  cursor: pointer;
 }
-.Daftar{
-  color:aqua;
+.Daftar {
+  color: aqua;
 }
 .question {
   text-align: right;
